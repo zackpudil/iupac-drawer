@@ -39,10 +39,10 @@ export class Alkyne {
   draw(path, down) {
     return path
       .lineto(LL, down ? LL : -LL)
-      .moveto(DBS, down ? -DBS : DBS)
+      .moveto(DBS/2, down ? -DBS/2 : DBS/2)
       .lineto(-LL, down ? -LL : LL)
-      .moveto(-DBS*2, down ? DBS*2 : -DBS*2)
+      .moveto(-DBS, down ? DBS : -DBS)
       .lineto(LL, down ? LL : -LL)
-      .moveto(DBS, down ? -DBS : DBS);
+      .moveto(DBS/2, down ? -DBS/2 : DBS/2);
   }
 }

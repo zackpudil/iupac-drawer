@@ -1,25 +1,50 @@
 import {Alkyl, Alkane, Alkene, Alkyne} from './alkyl';
 
-const carbonToAmount = [
-  {name: 'meth', amount: 0 },
-  {name: 'eth', amount: 1 },
-  {name: 'prop', amount: 2 },
-  {name: 'but', amount: 3 },
-  {name: 'pent', amount: 4 },
-  {name: 'hex', amount: 5 },
-  {name: 'hept', amount: 6 },
-  {name: 'oct', amount: 7 },
-  {name: 'non', amount: 8 },
-  {name: 'dec', amount: 9 }
+const rootToAmount = [
+  { name: 'meth', amount: 0 },
+  { name: 'eth', amount: 1 },
+  { name: 'prop', amount: 2 },
+  { name: 'but', amount: 3 },
+  { name: 'pent', amount: 4 },
+  { name: 'hex', amount: 5 },
+  { name: 'hept', amount: 6 },
+  { name: 'oct', amount: 7 },
+  { name: 'non', amount: 8 },
+  { name: 'dec', amount: 9 }
 ];
 
+const prefixToAmount = [
+  { name: 'di', amount: 2 },
+  { name: 'tri', amount: 3 },
+  { name: 'tetra', amount: 4 },
+  { name: 'penta', amount: 5 },
+  { name: 'hexa', amount: 6 },
+  { name: 'hepta', amount: 7 },
+  { name: 'oxa', amount: 8 },
+  { name: 'nona', amount: 9 },
+  { name: 'deca', amount: 10 }
+];
+
+const regexTemplate = (negativeLookBehind, suffix) => {
+  let regexOr = (table) => table.reduce( (sum, val, idx) => {
+    if(idx == 0)
+      sum += val.name;
+    else
+      sum += "|"+val.name;
+    return sum;
+  }, "");
+
+  return `(\\d(?:,?\\d?){1,9})-(?!(?:${regexOr(rootToAmount)})a?(?:${regexOr(prefixToAmount)})(:?${negativeLookBehind})).*(?:${regexOr(prefixToAmount)})?${suffix}`;
+};
+
+
 export const alkyneParser = (name) => {
-  var re = new RegExp(/(\d(?:,?\d?){1,9})-(?!(?:meth|eth|prop|but|pent|hex|hept|oct|non|dec)a?(?:tri|di|tetr|pent)?a?(:?en|yl)).*(?:tr|di|tetr|pent)?yn/g);
+  let re = new RegExp(regexTemplate('en|yl', 'yn'), 'g');
   return re.exec(name)[1].split(',');
 };
 
 export const alkeneParser = (name) => {
-  var re = new RegExp(/(\d(?:,?\d?){1,9})-(?!(?:meth|eth|prop|but|pent|hex|hepta|oct|non|dec)a?(?:tri|di|tetr|pent)?(:?yl)).*(?:tri|di|tetr|pent)?en/g);
+  let re = new RegExp(regexTemplate('yl', 'en'), 'g');
   return re.exec(name)[1].split(',');
 };
 
@@ -34,7 +59,7 @@ export class AlkylInterpreter {
   }
 
   interpret(name) {
-    let amount = this.findInTable(name, carbonToAmount).amount;
+    let amount = this.findInTable(name, rootToAmount).amount;
 
     if(name.endsWith('ane'))
       return this.create(amount, [], []);

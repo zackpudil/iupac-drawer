@@ -70,18 +70,20 @@ export class AlkylInterpreter {
   }
 
   create(amount, enes, ynes) {
-    let constituents = [];
+    let a = new Alkyl(150, 300);
 
+    let cis = false;
     for(let i = 1; i <= amount; i++) {
       if(enes.indexOf('' + i) > -1) {
-        constituents.push(new Alkene());
+        a.addAlkene(cis);
+        cis = !cis;
       } else if(ynes.indexOf('' + i) > -1) {
-        constituents.push(new Alkyne());
+        a.addAlkyne();
       } else {
-        constituents.push(new Alkane());
+        a.addAlkane();
       }
     }
 
-    return new Alkyl(constituents);
+    return a;
   }
 }

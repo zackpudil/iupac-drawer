@@ -20,7 +20,7 @@ const prefixToAmount = [
   { name: 'penta', amount: 5 },
   { name: 'hexa', amount: 6 },
   { name: 'hepta', amount: 7 },
-  { name: 'oxa', amount: 8 },
+  { name: 'octa', amount: 8 },
   { name: 'nona', amount: 9 },
   { name: 'deca', amount: 10 }
 ];
@@ -34,7 +34,7 @@ const regexTemplate = (negativeLookBehind, suffix) => {
     return sum;
   }, "");
 
-  return `(\\d(?:,?\\d?){1,9})-(?!(?:${regexOr(rootToAmount)})a?(?:${regexOr(prefixToAmount)})(:?${negativeLookBehind})).*(?:${regexOr(prefixToAmount)})?${suffix}`;
+  return `(\\d(?:,?\\d?){1,9})-(?!(?:${regexOr(rootToAmount)})a?(?:${regexOr(prefixToAmount)})?(:?${negativeLookBehind})).*(?:${regexOr(prefixToAmount)})?${suffix}`;
 };
 
 
@@ -48,7 +48,7 @@ export const alkeneParser = (name) => {
   return re.exec(name)[1].split(',');
 };
 
-export class AlkylInterpreter {
+export default class AlkylInterpreter {
   findInTable(name, table) {
     let find = table.find(cta => {
       if(name.includes(cta.name)) return true;
@@ -58,21 +58,21 @@ export class AlkylInterpreter {
     return find;
   }
 
-  interpret(name) {
+  interpret(name, startCoord, rotation) {
     let amount = this.findInTable(name, rootToAmount).amount;
 
     if(name.endsWith('ane'))
-      return this.create(amount, [], []);
+      return this.create(amount, [], [], startCoord, rotation);
     else if(name.endsWith('ene'))
-      return this.create(amount, alkeneParser(name), []);
+      return this.create(amount, alkeneParser(name), [], startCoord, rotation);
     else if(name.endsWith('yne'))
-      return this.create(amount, alkeneParser(name), alkyneParser(name));
+      return this.create(amount, alkeneParser(name), alkyneParser(name), startCoord, rotation);
   }
 
-  create(amount, enes, ynes) {
-    let a = new Alkyl(150, 300);
+  create(amount, enes, ynes, startCoord, rotation) {
+    let a = new Alkyl(startCoord.x, startCoord.y, rotation);
 
-    let cis = false;
+    let cis = true;
     for(let i = 1; i <= amount; i++) {
       if(enes.indexOf('' + i) > -1) {
         a.addAlkene(cis);

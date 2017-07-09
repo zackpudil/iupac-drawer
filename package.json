@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel src --out-dir out && node out/index.js ",
+    "start": "babel src --out-dir out && node out/server.js ",
     "run": "node out/index.js"
   },
   "author": "",

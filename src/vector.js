@@ -15,4 +15,12 @@ export default class Vector {
   subtract(v) {
     return new Vector(this.x-v.x, this.y-v.y);
   }
+
+  rotateUp() {
+    return new Vector(this.y, -this.x);
+  }
+
+  rotateDown() {
+    return new Vector(-this.y, this.x);
+  }
 }

@@ -1,5 +1,5 @@
 import { Alkyl, Alkene, Alkane, LL } from './alkyl';
-import AlkylInterpreter from './interpreter';
+import { AlkylInterpreter } from './interpreter';
 import Vector from './vector';
 
 import Path from 'paths-js/path';
@@ -24,6 +24,7 @@ export default class Structure {
     let alkyl = this.interpreter.interpret(alkylName, startCoord, carbon.up ? 1 : 2);
 
     this.substituents.push({ alkyl: alkyl, coord: carbon.coord });
+    return this;
   }
 
   draw(path) {

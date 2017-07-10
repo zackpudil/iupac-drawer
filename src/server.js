@@ -1,5 +1,6 @@
 import express from 'express';
 import Structure from './structure';
+import Interpreter from './interpreter';
 
 import Path from 'paths-js/path';
 
@@ -11,11 +12,13 @@ app.get('/', (req, res) => {
 
 app.get('/draw', (req, res) => {
 
-  let a = new Structure('2-decen-5-yne');
-  a.addSubstituent('ethane', 3);
-  a.addSubstituent('methane', 6);
-  a.addSubstituent('methane', 2);
-  a.addSubstituent('2-propene', 8);
+  let a = new Structure('2-decen-5-yne')
+    .addSubstituent('ethane', 3)
+    .addSubstituent('methane', 6)
+    .addSubstituent('methane', 2)
+    .addSubstituent('propane', 8);
+
+  new Interpreter().interpret(req.query.name);
 
   res.send(`
     <svg height="500" width="2000">

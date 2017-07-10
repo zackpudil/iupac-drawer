@@ -1,4 +1,5 @@
 import {Alkyl, Alkane, Alkene, Alkyne} from './alkyl';
+import Structure from './structure';
 
 const rootToAmount = [
   { name: 'meth', amount: 0 },
@@ -25,18 +26,17 @@ const prefixToAmount = [
   { name: 'deca', amount: 10 }
 ];
 
-const regexTemplate = (negativeLookBehind, suffix) => {
-  let regexOr = (table) => table.reduce( (sum, val, idx) => {
-    if(idx == 0)
-      sum += val.name;
-    else
-      sum += "|"+val.name;
+const tableToOr = (table) => {
+  return table.reduce( (sum, val, idx) => {
+    if(idx == 0) sum += val.name;
+    else sum += "|"+val.name;
     return sum;
-  }, "");
-
-  return `(\\d(?:,?\\d?){1,9})-(?!(?:${regexOr(rootToAmount)})a?(?:${regexOr(prefixToAmount)})?(:?${negativeLookBehind})).*(?:${regexOr(prefixToAmount)})?${suffix}`;
+  }, "")
 };
 
+const regexTemplate = (negativeLookAhead, suffix) => {
+  return `(\\d(?:,?\\d?)*)-(?!(?:${tableToOr(prefixToAmount)})?(?:${tableToOr(rootToAmount)})a?(?:${tableToOr(prefixToAmount)})?(?:${negativeLookAhead})).*(?:${tableToOr(prefixToAmount)})?${suffix}`;
+};
 
 export const alkyneParser = (name) => {
   let re = new RegExp(regexTemplate('en|yl', 'yn'), 'g');
@@ -48,7 +48,29 @@ export const alkeneParser = (name) => {
   return re.exec(name)[1].split(',');
 };
 
-export default class AlkylInterpreter {
+export const substituentParser = (name) => {
+  let reTemp = `-?(\\d(?:,\\d?)*-(?:${tableToOr(prefixToAmount)})?(?:${tableToOr(rootToAmount)})yl)`
+  let re = new RegExp(reTemp, 'g');
+
+  let ret = [];
+  let a = re.exec(name);
+
+  while (a !== null) {
+    ret.push(a[1]);
+    a = re.exec(name);
+  }
+
+  return ret;
+};
+
+export default class Interpreter {
+  interpret(name, startCoord) {
+    let subData = substituentParser(name);
+    console.log(subData);
+  }
+}
+
+export class AlkylInterpreter {
   findInTable(name, table) {
     let find = table.find(cta => {
       if(name.includes(cta.name)) return true;

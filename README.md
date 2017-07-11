@@ -4,20 +4,25 @@ Api that draws molecular diagrams based on IUPAC nomenclature https://iupac.org/
 ![screen shot](https://raw.githubusercontent.com/zackpudil/iupac-drawer/master/screenshot.png)
 
 # Development
+
+### Run
 ```
 $npm install
 $npm start
 ```
 
-To debug the application:
+browse to http://localhost:3000/draw?name=any-iupac-name
+
+### Debug
 ```
 $npm run debug
 ```
+Command will print a link, paste that link into chrome browser to start debugging.
 
+### Transpile
 To just transpile the application (uses babel).
-
 ```
 $npm run compile
 ```
 
-browse to http://localhost:3000/draw?name=any-iupac-name
+transpiles src directory to out directory.

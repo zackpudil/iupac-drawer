@@ -17,13 +17,13 @@ const rootToAmount = [
 const prefixToAmount = [
   { name: 'di', amount: 2 },
   { name: 'tri', amount: 3 },
-  { name: 'tetra', amount: 4 },
-  { name: 'penta', amount: 5 },
-  { name: 'hexa', amount: 6 },
-  { name: 'hepta', amount: 7 },
-  { name: 'octa', amount: 8 },
-  { name: 'nona', amount: 9 },
-  { name: 'deca', amount: 10 }
+  { name: 'tetr', amount: 4 },
+  { name: 'pent', amount: 5 },
+  { name: 'hex', amount: 6 },
+  { name: 'hept', amount: 7 },
+  { name: 'oct', amount: 8 },
+  { name: 'non', amount: 9 },
+  { name: 'dec', amount: 10 }
 ];
 
 const tableToOr = (table) => {
@@ -35,7 +35,7 @@ const tableToOr = (table) => {
 };
 
 const regexTemplate = (negativeLookAhead, suffix) => {
-  return `(\\d(?:,?\\d?)*)-(?!(?:${tableToOr(prefixToAmount)})?(?:${tableToOr(rootToAmount)})a?(?:${tableToOr(prefixToAmount)})?(?:${negativeLookAhead})).*(?:${tableToOr(prefixToAmount)})?${suffix}`;
+  return `(\\d(?:,?\\d?)*)-(?!(?:${tableToOr(prefixToAmount)})?a?(?:${tableToOr(rootToAmount)})a?(?:${tableToOr(prefixToAmount)})?(?:${negativeLookAhead})).*(?:${tableToOr(prefixToAmount)})?a?${suffix}`;
 };
 
 export const alkyneParser = (name) => {
@@ -49,7 +49,7 @@ export const alkeneParser = (name) => {
 };
 
 export const substituentParser = (name) => {
-  let reTemp = `-?(\\d(?:,\\d?)*-(?:${tableToOr(prefixToAmount)})?(?:${tableToOr(rootToAmount)})yl)`
+  let reTemp = `-?(\\d(?:,\\d?)*-(?:${tableToOr(prefixToAmount)})?a?(?:${tableToOr(rootToAmount)})yl)`
   let re = new RegExp(reTemp, 'g');
 
   let ret = [];
@@ -64,9 +64,27 @@ export const substituentParser = (name) => {
 };
 
 export default class Interpreter {
+  constructor() {
+    this.alkylInt = new AlkylInterpreter();
+  }
+
   interpret(name, startCoord) {
     let subData = substituentParser(name);
-    console.log(subData);
+
+    let structure = new Structure(subData.reduce((main, sub) => main.replace(sub+"-", ""), name), startCoord);
+
+    subData.forEach(name => {
+      let reg = new RegExp(`(\\d(?:,?\\d?)*)-((?:${tableToOr(prefixToAmount)})?a?(?:${tableToOr(rootToAmount)}))yl`, 'g');
+      let a = reg.exec(name);
+
+      let suffix = prefixToAmount.reduce((suf, pre) => suf.replace(pre.name, ""), a[2]);
+
+      a[1].split(',').forEach(idx => {
+        structure.addSubstituent(suffix + 'ane', idx-1);
+      });
+    });
+
+    return structure;
   }
 }
 

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel src --out-dir out && node out/server.js ",
-    "run": "node out/index.js"
+    "compile": "babel src --out-dir out",
+    "start": "npm run compile && node out/server.js ",
+    "debug": "npm run compile && node --inspect out/server.js"
   },
   "author": "",
   "license": "ISC",

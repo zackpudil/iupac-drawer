@@ -18,7 +18,7 @@ export class Alkyl {
 
     this.origin = new Vector(0, 0);
     this.nextOrigin = new Vector(0, 0);
-    this.up = true;
+    this.up = false;
     this.rotDir = rotate
 
     this.bonds = [];

@@ -14,8 +14,8 @@ class BondVector {
   static csp = (up) => [
     new BondVector(30, up ? 30 : -30), 
     new BondVector(-30, up ? -25 :  25), 
-    new BondVector(28, up ? 28 : -28),
-    new BondVector(-24, up ? -34 : 34),
+    new BondVector(30, up ? 30 : -30),
+    new BondVector(-25, up ? -35 : 35),
     new BondVector(-5, 0)
   ];
 
@@ -108,10 +108,12 @@ export class CarbonElement {
     else if(carbon.ene) a = 60;
     else a = 90;
 
+    let up = idx >= 1 ? carbon.p.y > this.carbons[idx-1].p.y : !carbon.p.up;
+
     this.subs.push({
       d: sub,
       r: { 
-        a: a*(carbon.p.y > this.carbons[idx-1].p.y ? 1 : -1),
+        a: a*(up ? 1 : -1),
         x: carbon.p.x,
         y: carbon.p.y
       }

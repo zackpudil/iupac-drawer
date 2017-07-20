@@ -28,7 +28,7 @@ class BondVector {
 export class CarbonElement {
   d = "";
   carbons = [];
-  up = false;
+  up = true;
   subs = [];
 
   prevCarbon = () => [...this.carbons].pop();
@@ -111,7 +111,7 @@ export class CarbonElement {
     this.subs.push({
       d: sub,
       r: { 
-        a: a*(carbon.p.y > this.carbons[0].p.y ? 1 : -1),
+        a: a*(carbon.p.y > this.carbons[idx-1].p.y ? 1 : -1),
         x: carbon.p.x,
         y: carbon.p.y
       }

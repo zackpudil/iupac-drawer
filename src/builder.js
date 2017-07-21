@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import { CarbonElement } from './carbon-path';
+import CarbonPath from './draw/carbon-path';
 
 function *buildChain(chain) {
   let regex = /c(-|=|~)/g;
@@ -22,7 +22,7 @@ function *buildChain(chain) {
 };
 
 export default (template) => {
-  let molecule = new CarbonElement().start({x: 200, y: 200});
+  let molecule = new CarbonPath().start({x: 200, y: 200});
   molecule.compose([...buildChain(template.chain)]);
 
   let recur = (mol, tpt) => {

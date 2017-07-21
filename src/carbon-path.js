@@ -104,9 +104,13 @@ export class CarbonElement {
     let sub = new CarbonElement().start(carbon.p).sub().compose(subFns);
 
     var a;
-    if(carbon.nextEne) a = 120;
-    else if(carbon.ene) a = 60;
-    else a = 90;
+    if(carbon.nextEne) {
+      if(this.carbons.up) a = -120;
+      else a = 120;
+    } else if(carbon.ene) {
+      if(this.carbons[idx + 1].up) a = -60;
+      else a = 60;
+    } else a = 90;
 
     let up = idx >= 1 ? carbon.p.y > this.carbons[idx-1].p.y : !carbon.p.up;
 

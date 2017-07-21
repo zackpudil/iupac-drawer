@@ -1,8 +1,3 @@
-import util from 'util';
-
-import strip from './stripper';
-import build from './builder';
-
 export const tests = [
   //alkanes
   'octane',
@@ -25,15 +20,8 @@ export const tests = [
   '1-methyl-3-(3,4-diethyl-2-butenyl)-5-octene',
   //alkynes
   '4-ethyl-3,5,9-trimethyl-8-propyl-2,8-decadien-6-yne',
-  '4-ethyl-3,5,9-trimethyl-8-propyl-2-(2,3,4-triethylhexyl)-2,8-decadien-6-yne',
+  '4-ethyl-3,5,9-trimethyl-8-propyl-2-(2,3,4-triethyl-3,5-hexadienyl)-2,8-decadien-6-yne',
   '4-ethyl-3,5,9-trimethyl-8-propyl-2,3,5-(2,3,4-triethylhexyl)-2,8-decadien-6-yne',
   '2-(2,3,4-triethyl-2,4-hexadienyl)-4-octyne',
   '2-(2,3,4-triethyl-4,5,6-hexatrienyl)-5,3-decadiyne'
 ];
-
-tests.forEach(test => {
-  let result = build(strip(test));
-  console.log(test);
-  console.log(result.print());
-  console.log('---------------');
-});

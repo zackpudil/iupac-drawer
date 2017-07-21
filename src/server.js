@@ -1,6 +1,7 @@
 import express from 'express';
 import build from './builder';
 import strip from './stripper';
+import parse from './parser';
 
 import { tests } from './tests';
 
@@ -19,7 +20,7 @@ app.get('/draw', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${build(strip(req.query.name)).print()} 
+      ${build(strip(parse(req.query.name))).print()} 
     </svg>
   `); 
 }); 
@@ -33,7 +34,7 @@ app.get('/test/:id', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${build(strip(tests[req.params.id])).print()} 
+      ${build(strip(parse(tests[req.params.id]))).print()} 
     </svg>
   `);
 });

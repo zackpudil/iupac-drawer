@@ -1,6 +1,5 @@
 import 'babel-polyfill';
 import {infixOr, infixCount, composeExp} from './nomenclature';
-import parse from './parser';
 
 const extract = (regex, name, t = (a) => a.split(',').map(i => Number(i))) => {
   let a = regex.exec(name);
@@ -31,11 +30,11 @@ const stripChain = (name) => {
   return 'c'+bonds.join('c')+'c';
 };
 
-export default (name) => {
-  let recur = (parsed) => Object.assign({}, parsed, {
-    chain: stripChain(parsed.chain),
-    subs: parsed.subs ? parsed.subs.map(sc => recur(sc)) : []
+export default (molecule) => {
+  let recur = (mol) => Object.assign({}, mol, {
+    chain: stripChain(mol.chain),
+    subs: mol.subs ? mol.subs.map(sc => recur(sc)) : []
   });
 
-  return recur(parse(name));
+  return recur(molecule);
 };

@@ -105,8 +105,8 @@ export class CarbonElement {
 
     var a;
     if(carbon.nextEne) {
-      if(this.carbons.up) a = -120;
-      else a = 120;
+      if(this.carbons[idx - 1].up) a = 120;
+      else a = -120;
     } else if(carbon.ene) {
       if(this.carbons[idx + 1].up) a = -60;
       else a = 60;

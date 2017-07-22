@@ -22,7 +22,7 @@ function *buildChain(chain) {
 };
 
 export default (template) => {
-  let molecule = new CarbonPath().start({x: 200, y: 200});
+  let molecule = new CarbonPath().start({x: 300, y: 300});
   molecule.compose([...buildChain(template.chain)]);
 
   let recur = (mol, tpt) => {

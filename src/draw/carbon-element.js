@@ -45,10 +45,13 @@ export default class CarbonElement {
     if(carbon.nextEne) {
       if(this.carbonPath.carbons[idx - 1].up) a = 120;
       else a = -120;
+      if(this.carbonPath.carbons[idx -1].ene && !this.carbonPath.carbons[idx-1].up) a *= -1;
     } else if(carbon.ene) {
       if(this.carbonPath.carbons[idx + 1].up) a = -60;
       else a = 60;
-    } else a = 90;
+    } else {
+      a = 90;
+    }
 
     let up = idx >= 1 ? carbon.p.y > this.carbonPath.carbons[idx-1].p.y : carbon.up;
     a *= up ? 1 : -1;

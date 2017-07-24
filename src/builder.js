@@ -1,36 +1,51 @@
-import 'babel-polyfill';
-import CarbonPath from './draw/carbon-path';
+const h = { type: 'h' };
 
-function *buildChain(chain) {
-  let regex = /c(-|=|~)/g;
-  while(true) {
-    let a = regex.exec(chain);
-    if(!a) return;
 
-    switch(a[1]) {
-      case '-':
-        yield (c) => c.sigma();
-        break;
-      case '=':
-        yield (c) => c.pi(true);
-        break;
-      case '~':
-        yield(c) => c.sp();
-        break;
-    }
-  }
-};
+const build = (element, idx, carbon, up) => {
+  if(idx >= element.chain.length) return h;
+  let ret = { type: element.chain[idx] };
 
-export default (template) => {
-  let molecule = new CarbonPath().start({x: 300, y: 300});
-  molecule.compose([...buildChain(template.chain)]);
+  const pb = () => idx ? element.chain[idx - 1] : '';
+  const nb = () => idx < element.chain.length ? element.chain[idx + 1] : '';
 
-  let recur = (mol, tpt) => {
-    let subMol = mol.substituent(tpt.carbon - 1, [...buildChain(tpt.chain)]);
-    tpt.subs.forEach(t => recur(subMol, t));
-  };
+  const bond = (el, isSub) => ({
+    prev: pb(),
+    next: isSub ? '-' : nb(),
+    cnext: isSub ? nb() : '',
+    idx: isSub ? 0 : idx + 2,
+    carbon: isSub ? 1 : carbon + 1,
+    element: el,
+    up: isSub ? up : pb() == '=' ? up : !up,
+    sub: isSub
+  });
 
-  template.subs.forEach(t => recur(molecule, t));
 
-  return molecule;
-};
+  let bonds = element.subs
+    .filter(s => s.carbon == carbon)
+    .map(s => bond(s, true));
+
+  bonds.push(bond(element, false));
+
+  ret.bonds = bonds.map(b => {
+    let na = up ? 'd' : 'u';
+    let sa = up ? 'u' : 'd';
+    if(b.sub) [na,sa] = [sa, na]
+
+    let ret = {};
+    if(b.next == '-')  {
+      if(b.prev == '=') ret.angle = `${sa}-spi`;
+      else if(b.prev == '~') ret.angle = `stri`;
+      else if(b.cnext == '=') ret.angle = `${sa}-tpi`;
+      else ret.angle = `${na}-sig`;
+    } 
+    else if(b.next == '=') ret.angle = `${na}-pi`;
+    else if(b.next == '~') ret.angle = `tri`;
+
+    ret.to = build(b.element, b.idx, b.carbon, b.up);
+    return ret;
+  });
+
+  return ret;
+}
+    
+export default (parsed) => build(parsed, 0, 1, false);

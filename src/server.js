@@ -1,4 +1,5 @@
 import express from 'express';
+import draw from './drawer';
 import build from './builder';
 import strip from './stripper';
 import parse from './parser';
@@ -11,7 +12,7 @@ app.get('/', (req, res) => {
   res.send('IUPAC Drawer');
 });
 
-app.get('/draw', (req, res) => {
+app.get('/:name/draw', (req, res) => {
   res.send(`
     <svg height="1000" width="1000">
       <style>
@@ -20,23 +21,13 @@ app.get('/draw', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${build(strip(parse(req.query.name))).print()} 
+      ${draw(build(strip(parse(req.params.name))), 200, 200)} 
     </svg>
   `); 
 }); 
 
 app.get('/test/:id', (req, res) => {
-  res.send(`
-    <svg height="1000" width="1000">
-      <style>
-        path {
-          fill: none;
-          stroke: black;
-          stroke-width: 1;
-      </style>
-      ${build(strip(parse(tests[req.params.id]))).print()} 
-    </svg>
-  `);
+  res.redirect(`/${tests[req.params.id]}/draw`);
 });
 
 app.listen(3000);

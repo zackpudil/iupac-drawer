@@ -11,7 +11,7 @@ $npm install
 $npm start
 ```
 
-browse to http://localhost:3000/draw?name=any-iupac-name
+browse to http://localhost:3000/any-iupac-name/draw
 
 ### Debug
 ```

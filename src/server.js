@@ -1,8 +1,9 @@
 import express from 'express';
-import draw from './drawer';
-import build from './builder';
-import strip from './stripper';
-import parse from './parser';
+
+import parse from './parse';
+import tree from './tree';
+import model from './model';
+import draw from './draw';
 
 import { tests } from './tests';
 
@@ -21,7 +22,7 @@ app.get('/:name/draw', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${draw(build(strip(parse(req.params.name))), 200, 200)} 
+      ${draw(tree(model(parse(req.params.name))), 200, 200)} 
     </svg>
   `); 
 }); 

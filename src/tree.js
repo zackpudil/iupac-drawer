@@ -19,11 +19,9 @@ const build = (element, idx, carbon, up) => {
     sub: isSub
   });
 
-
   let bonds = element.subs
     .filter(s => s.carbon == carbon)
     .map(s => bond(s, true));
-
   bonds.push(bond(element, false));
 
   ret.bonds = bonds.map(b => {

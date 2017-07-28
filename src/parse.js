@@ -33,9 +33,7 @@ function *substituents(name) {
   const regex = /(?:^|-)(\d(?:,\d)*-\w*yl(?!\)))/g;
   let parse = (s) => {
     let [...idxs] = extract(s, /(\d)/g);
-    let suf = s
-       .replace(/\d(:?,\d)*-?/g, '')
-        .replace(prefixOr(), '');
+    let suf = s.replace(/\d(:?,\d)*-?/g, '');
 
     return idxs.map(idx => ({ carbon: Number(idx), chain: suf.replace(/yl/g, 'ane') }));
   };

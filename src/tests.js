@@ -24,5 +24,17 @@ export const tests = [
   '4-ethyl-3,5,9-trimethyl-8-propyl-2-(2,3,4-triethyl-3,5-hexadienyl)-2,8-decadien-6-yne', // 19
   '4-ethyl-3,5,9-trimethyl-8-propyl-2,3,5-(2,3,4-triethylhexyl)-2,8-decadien-6-yne', // 20
   '2-(3,4,5-triethyl-2,4-hexadienyl)-4-octyne', // 21
-  '2-(2,3,4-triethyl-2,4,6-heptatrienyl)-3,6-decadiyne' // 22
+  '2-(2,3,4-triethyl-2,4,6-heptatrienyl)-3,6-decadiyne', // 22
+  // cycloalkanes
+  'cyclobutane', // 23
+  'cyclopentane', // 24
+  'cyclohexane', // 25
+  '2,3-(1-ethenyl)cyclobutane', // 26
+  '2-ethyl-4-propylcyclopentane', // 27
+  '1,3-dimethylcyclohexane', // 28
+  // cycloalkenes
+  '2,4-cyclopentadiene', // 29
+  '4-(2-propenyl)-2,4-cyclopentadiene', // 30
+  '1,3,5-cyclohexatriene', // 31
+  '1,3-dimethyl-2,4-diethyl-5-(2-propenyl)-6-(1,3-butadienyl)-1,3,5-cyclohexatriene' // 32 
 ];

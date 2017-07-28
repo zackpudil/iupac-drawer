@@ -1,7 +1,19 @@
 const ext = (angle) => ({
-  base: angle.replace(/(u|d)-/g, ''),
+  base: angle.replace(/(u|d|\d+)-/g, ''),
   ud: angle.replace(/-\w*/g, '')
 });
+
+const cyclo = (n) => {
+  if(n == '41') return 0;
+  if(n.startsWith('4')) return 90;
+
+  if(n == '51') return 30;
+  if(n == '52' || n == '55') return 80;
+  if(n == '53' || n == '54') return 70;
+
+  if(n == '61') return 30;
+  if(n.startsWith('6')) return 60;
+};
 
 const rot = (a, x) => {
   let { base, ud } = ext(a);
@@ -12,17 +24,19 @@ const rot = (a, x) => {
   if(base === 'sig') {
     if(x == sx) ang = 30;
     else ang = 60;
-  } else if(base.includes('pi')) {
+  } else if(base.includes('pi') && !base.includes('c')) {
     if(x == sx) ang = 0;
     else ang = base == 'tpi' ? -120 : 30;
   } else if(base.includes('tri')) ang = 0;
+  else if(base == 'fsig') return -90;
+  else if(base.includes('c')) return cyclo(ud);
 
   return ang*(ud == 'u' ? -1 : 1);
 };
 
 const path = (a) => {
   let { base, ud } = ext(a);
-  if(base == 'pi') {
+  if(base == 'pi' || base == 'cpi') {
     let u = ud == 'u' ? -5 : 5;
     return `h30m-30,${u}h30`
   } else if(base == 'tri') {
@@ -44,7 +58,11 @@ const draw = (build, x, y) => {
 
 var sx;
 
-export default (build, startx, starty) => {
+export default (build, startx, starty, scale = 1) => {
   sx = startx;
-  return draw(build, startx, starty);
+  return `
+    <g transform="scale(${scale})">
+      ${draw(build, startx, starty)};
+    </g>
+  `;
 };

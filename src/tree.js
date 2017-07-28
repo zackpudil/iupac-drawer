@@ -1,6 +1,5 @@
 const h = { type: 'h' };
 
-
 const build = (element, idx, carbon, up) => {
   if(idx >= element.chain.length) return h;
   let ret = { type: element.chain[idx] };
@@ -34,9 +33,13 @@ const build = (element, idx, carbon, up) => {
       if(b.prev == '=') ret.angle = `${sa}-spi`;
       else if(b.prev == '~') ret.angle = `stri`;
       else if(b.cnext == '=') ret.angle = `${sa}-tpi`;
+      else if(b.prev == '/' || b.prev == '?') ret.angle = 'u-sig';
+      else if(b.cnext == '/' || b.cnext == '?') ret.angle = 'u-fsig';
       else ret.angle = `${na}-sig`;
     } 
     else if(b.next == '=') ret.angle = `${na}-pi`;
+    else if(b.next == '/') ret.angle = `${b.element.chain.match(/c/g).length - 1}${b.carbon - 1}-csig`;
+    else if(b.next == '?') ret.angle = `${b.element.chain.match(/c/g).length - 1}${b.carbon - 1}-cpi`;
     else if(b.next == '~') ret.angle = `tri`;
 
     ret.to = build(b.element, b.idx, b.carbon, b.up);

@@ -5,6 +5,8 @@ import tree from './tree';
 import model from './model';
 import draw from './draw';
 
+import * as util from 'util';
+
 import { tests } from './tests';
 
 let app = express();
@@ -22,7 +24,7 @@ app.get('/:name/draw', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${draw(tree(model(parse(req.params.name))), 200, 200)} 
+      ${draw(tree(model(parse(req.params.name))), 200, 200, req.query.scale)} 
     </svg>
   `); 
 }); 

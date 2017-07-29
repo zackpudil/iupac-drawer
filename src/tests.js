@@ -36,5 +36,6 @@ export const tests = [
   '2,4-cyclopentadiene', // 29
   '4-(2-propenyl)-2,4-cyclopentadiene', // 30
   '1,3,5-cyclohexatriene', // 31
-  '1,3-dimethyl-2,4-diethyl-5-(2-propenyl)-6-(1,3-butadienyl)-1,3,5-cyclohexatriene' // 32 
+  '1,3-dimethyl-2,4-diethyl-5-(2-propenyl)-6-(1,3-butadienyl)-1,3,5-cyclohexatriene', // 32 
+  '2,5-(1,3,5-cyclohexenyl)-8-(2-cyclopropylpropyl)-9-cyclopentyl-4-ethyl-3-methyl-2,8-decadien-6-yne' //33
 ];

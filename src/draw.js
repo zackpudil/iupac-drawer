@@ -39,7 +39,7 @@ const path = (a) => {
   let { base, ud } = ext(a);
   if(base == 'pi' || base == 'cpi' || base == 'ucpi') {
     let u = ud == 'u' ? -5 : 5;
-    return `h30m-30,${u}h30`;
+    return `h30m-28,${u}h26`;
   } else if(base == 'tri') {
     return "h30m-30,5h30m-30,-10h30";
   }

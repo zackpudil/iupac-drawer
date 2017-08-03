@@ -47,30 +47,23 @@ const path = (a) => {
   return "h30";
 };
 
-const text = (type, angle, x, y) => {
+const text = (type, x, y, start = false) => {
   if(type == 'c') return '';
 
-  let [ang, dx, dy] = [0,0,0];
-  let u = angle.includes('u') ? -1 : 1;
-
-  if(angle.includes('sig')) [ang, dx, dy] = [90*-u, type.length == 1 ? 3 : 5, u == 1 ? 10 : 0];
-  else if(angle.includes('tpi')) [ang, dx, dy] = [150*u, type.length == 1 ? 10 : 15, 5];
-  else if(angle.includes('spi')) [ang, dx, dy] = [30*-u, 0, 5];
-  else if(angle == 'start') [ang, dx, dy] = [0, type.length == 1 ? 10 : 15, 5];
-
+  let dx = start ? 5 : 0;
   return `
-    <text x="${x - dx}" y="${y + dy}" transform="rotate(${ang}, ${x}, ${y})">
+    <text x="${x - dx}" y="${y + 5}">
       ${type.replace(/^([a-z])/g, (n) => n.toUpperCase())}
     </text>
   `;
 };
 
 const draw = (tree, x, y) => {
-  let p = x == sx ? text(tree.type, 'start', x, y) : '';
+  let p = x == sx ? text(tree.type, x, y, true) : '';
   p += tree.bonds.filter(t => t.to.type != 'h').map(t => `
     <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
       <path d="M${x},${y}${path(t.angle)}" />
-      ${text(t.to.type, t.angle, x + 30, y)}
+      ${text(t.to.type, x + 30, y)}
       ${draw(t.to, x + 30, y)}
     </g>
   `).join('');

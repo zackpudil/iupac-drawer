@@ -54,8 +54,8 @@ const build = (element, idx, carbon, up, primary) => {
       else ret.angle = `${na}-sig`;
     } 
     else if(b.next == '=') {
-      if(b.cnext) {
-        if(!b.prev) ret.angle = "u-fupi";
+      if(b.cnext || (b.prev && !b.idx)) {
+        if(!b.prev) ret.angle = `${isCyclo(b.cnext) ? 'u' : 'd'}-fupi`;
         else if(b.prev == '=') ret.angle = `${sa}-uspi`;
         else if(b.cnext == '=') ret.angle =  `${sa}-utpi`;
         else ret.angle = `${isCyclo(b.prev) ? 'u' : na}-upi`;

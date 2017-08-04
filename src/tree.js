@@ -36,9 +36,9 @@ const build = (element, idx, carbon, up, primary) => {
   ret.bonds = bonds.map(b => {
     let na = up ? 'd' : 'u';
     let sa = up ? 'u' : 'd';
-    if(b.sub) [na,sa] = [sa, na]
+    if(b.sub) [na,sa] = [sa, na];
 
-    let cc = b.element.chain.match(/(c|f|cl|br|i)/g).length - 1;
+    let cc = b.element.chain.match(/(c|f|cl|br|i|oH)/g).length - 1;
     let cn = b.carbon - 1;
     let uc = !b.prim ? 'u' : '';
 

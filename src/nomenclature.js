@@ -1,9 +1,23 @@
-export const composeExp = (rega, regb) => new RegExp(rega.source.replace('~', regb.source), 'g');
+export const composeExp = (rega, ...regs) => {
+    let src = rega.source;
+    regs.forEach((reg, idx) => {
+        let key = `~${idx == 0 ? '' : idx}`;
+        src = src.replace(key, reg.source ? reg.source : reg);
+    });
+
+    return new RegExp(src, 'g');
+}
 
 export const PREFIX = ['di', 'tri', 'tetr', 'pent', 'hex', 'hept', 'oct', 'non', 'dec'];
 export const SUFFIX = ['ane', 'ene', 'yne', 'ol', 'al', 'one', 'oate', 'oic acid', 'amine'];
 export const INFIX = ['meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct', 'non', 'dec'];
 export const SUB = ['yl', 'fluoro', 'chloro', 'bromo', 'iodo'];
+
+export const FUNCTIONAL_GROUPS = [
+    { sub: 'hydroxy', main: 'ol' },
+    { sub: 'formyl', main: 'al' },
+    { sub: 'oxo', main: 'one' }
+];
 
 const toRegexOr = (table) => new RegExp(`(?:${table.reduce((p, a, i) => p += i == 0 ? a : "|"+a, "")})`, 'g');
 

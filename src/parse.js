@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import  { prefixOr, suffixOr, subOr, composeExp } from './nomenclature';
+import  { prefixOr, suffixOr, subOr, infixOr, composeExp, FUNCTIONAL_GROUPS } from './nomenclature';
 
 function *extract(name, regex, tf = (s) => [s]) {
   while(true) {
@@ -41,8 +41,25 @@ function *substituents(name) {
   yield *extract(name, regex, parse);
 };
 
+const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
+  .filter(fg => name.includes(fg.main))
+  .map(fg => {
+    let match = composeExp(/(\d(?:,\d)*)?-?(?!\w*yl|mo|oro|do|xy)\w*~/g, fg.main).exec(name);
+
+    let newParent = name
+      .replace(composeExp(/-?(?:\d(?:,\d)*)?-?~?~1/g, prefixOr(), fg.main), 'e')
+      .replace(composeExp(/(?:\d(?:,\d)*)-((?:cyclo)?~(?!\w*en|\w*yn|\w*yl).)/g, infixOr()), '$1')
+      .replace(/ae$/g, 'ane');
+
+    let idx = match[1] ? match[1] : '1';
+    let newName = `${idx}-${fg.sub}-${newParent}`;
+
+    return newName;
+  })[0];
+
 export default (name) =>  {
-  const regex = composeExp(/((?:\w(?!yl|mo|oro|do|xy)|-|\d(?:,\d)*)*(?:~))/g, suffixOr());
+  name = convertFunctionalGroups(name) || name;
+  const regex = /((?:\w(?!yl|mo|oro|do|xy)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g;
 
   return {
     chain: regex.exec(name)[1].replace(/^(?:-|yl|mo|oro|do|xy)*/g, ''),

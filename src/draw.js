@@ -49,12 +49,9 @@ const path = (a) => {
 
 const text = (type, x, y, start = false) => {
   if(type == 'c') return '';
-  let dx = start 
-    ? type.length == 1 ? 5 : 15
-    : 0;
 
   return `
-    <text x="${x - dx}" y="${y + 5}">
+    <text x="${x}" y="${y + 5}" text-anchor="${start ? "end" : "start"}">
       ${type.replace(/^([a-z])/g, (n) => n.toUpperCase())}
     </text>
   `;

@@ -45,5 +45,20 @@ export const tests = [
   '4,8-bromo-2,9-dichloro-3,5-difluoro-4,8-decadiene', //37
   '1-bromo-2-chloro-3-iodo-4-fluorocyclohexane', // 38
   '1,5-dibromo-2-chloro-4-fluoro-3,6-diiodocyclohexane', // 39
-  '2,5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-9-(2,4-difluorocyclopentyl)-4-fluoro-3-chloro-2,8-decadien-6-yne' // 40 
+  '2,5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-9-(2,4-difluorocyclopentyl)-4-fluoro-3-chloro-2,8-decadien-6-yne', // 40 
+  // alcohols
+  'butanol', // 41
+  '2-buten-3-ol', // 42
+  '3-butanol', // 43
+  '1,4-butadiol', // 44
+  '2-buten-1,2,4-triol', // 45
+  '1,3,4-butatriol', // 46
+  '2-ethylbutanol', // 47
+  '2-methyl-2-buten-3-ol', // 48
+  '2-bromo-3-butanol', // 49
+  '2-chloro-1,4-butadiol', // 50
+  '3-fluoro-2-buten-1,2,4-triol', // 51
+  '2-(2-propenyl)-1,3,4-butatriol', // 52
+  '2-(2-propenyl)-1,3,4-cyclohexatriol', // 53
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-2,8-decadien-6-yn-1,4,9-triol' // 54
 ];

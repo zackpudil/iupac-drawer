@@ -29,6 +29,7 @@ const stripChain = (name) => {
   if(name.includes('chloro')) return 'cl';
   if(name.includes('bromo')) return 'br';
   if(name.includes('iodo')) return 'i';
+  if(name.includes('hydroxy')) return 'oH';
 
   let bonds = [...convertBonds(name)];
   if(bonds.length == 0)

@@ -42,7 +42,7 @@ export const tests = [
   '2-bromo-3-chlorobutane', // 34
   '3-(3-chloro-2-bromo-1-propenyl)-2-bromo-1-chloro-4-iodobutane', // 35
   '3-bromo-2-chloro-4,5-difluoro-4-hexene', //36
-  '4,8-bromo-2,9-dichloro-3,5-difluoro-4,8-decadiene', //37
+  '4,8-dibromo-2,9-dichloro-3,5-difluoro-4,8-decadiene', //37
   '1-bromo-2-chloro-3-iodo-4-fluorocyclohexane', // 38
   '1,5-dibromo-2-chloro-4-fluoro-3,6-diiodocyclohexane', // 39
   '2,5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-9-(2,4-difluorocyclopentyl)-4-fluoro-3-chloro-2,8-decadien-6-yne', // 40 
@@ -60,5 +60,13 @@ export const tests = [
   '3-fluoro-2-buten-1,2,4-triol', // 51
   '2-(2-propenyl)-1,3,4-butatriol', // 52
   '2-(2-propenyl)-1,3,4-cyclohexatriol', // 53
-  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-2,8-decadien-6-yn-1,4,10-triol' // 54
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-2,8-decadien-6-yn-1,4,10-triol', // 54
+  // ketones
+  '2-propanone', // 55
+  '2,3-butadione', // 56
+  '3-buten-1-one', // 57
+  '2,8-decadien-6-yn-1,4,5,10-tetrone', //58
+  '1,3,5-cyclohexadien-1,2,3,4,5,6-hexone', // 59
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione', // 60
+  '5-(2,3,4-trioxo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione'
 ];

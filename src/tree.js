@@ -14,7 +14,7 @@ const build = (element, idx, carbon, up, primary) => {
 
   const bond = (el, isSub, prim) => ({
     prev: pb(),
-    next: isSub ? '-' : nb(),
+    next: isSub ? el.chain == 'o' ? '=' : '-' : nb(),
     cnext: isSub ? nb() : '',
     idx: isSub ? 0 : idx + toNextBond() + 1,
     carbon: isSub ? 1 : carbon + 1,
@@ -38,20 +38,30 @@ const build = (element, idx, carbon, up, primary) => {
     let sa = up ? 'u' : 'd';
     if(b.sub) [na,sa] = [sa, na];
 
-    let cc = b.element.chain.match(/(c|f|cl|br|i|oH)/g).length - 1;
+    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o)/g).length - 1;
     let cn = b.carbon - 1;
     let uc = !b.prim ? 'u' : '';
+
+    const isCyclo = (b) => b == '/' || b == '?';
 
     let ret = {};
     if(b.next == '-')  {
       if(b.prev == '=') ret.angle = `${sa}-spi`;
       else if(b.prev == '~') ret.angle = `stri`;
       else if(b.cnext == '=') ret.angle = `${sa}-tpi`;
-      else if(b.prev == '/' || b.prev == '?') ret.angle = 'u-sig';
-      else if(b.cnext == '/' || b.cnext == '?') ret.angle = 'u-fsig';
+      else if(isCyclo(b.prev)) ret.angle = 'u-sig';
+      else if(isCyclo(b.cnext)) ret.angle = 'u-fsig';
       else ret.angle = `${na}-sig`;
     } 
-    else if(b.next == '=') ret.angle = `${na}-pi`;
+    else if(b.next == '=') {
+      if(b.cnext) {
+        if(!b.prev) ret.angle = "u-fupi";
+        else if(b.prev == '=') ret.angle = `${sa}-uspi`;
+        else if(b.cnext == '=') ret.angle =  `${sa}-utpi`;
+        else ret.angle = `${isCyclo(b.prev) ? 'u' : na}-upi`;
+      }
+      else ret.angle = `${na}-pi`;
+    } 
     else if(b.next == '/') ret.angle = `${cc}${cn}-${uc}csig`;
     else if(b.next == '?') ret.angle = `${cc}${cn}-${uc}cpi`;
     else if(b.next == '~') ret.angle = `tri`;

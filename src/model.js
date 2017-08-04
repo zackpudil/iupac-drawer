@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import {infixOr, infixCount, composeExp} from './nomenclature';
+import {prefixOr, infixOr, infixCount, composeExp, SUB_TO_ELEMENT_MAP} from './nomenclature';
 
 const extract = (regex, name, t = (a) => a.split(',').map(i => Number(i))) => {
   let a = regex.exec(name);
@@ -25,11 +25,8 @@ function *convertBonds(name) {
 };
 
 const stripChain = (name) => {
-  if(name.includes('fluoro')) return 'f';
-  if(name.includes('chloro')) return 'cl';
-  if(name.includes('bromo')) return 'br';
-  if(name.includes('iodo')) return 'i';
-  if(name.includes('hydroxy')) return 'oH';
+  if(SUB_TO_ELEMENT_MAP[name.replace(prefixOr(), '')])
+    return SUB_TO_ELEMENT_MAP[name.replace(prefixOr(), '')];
 
   let bonds = [...convertBonds(name)];
   if(bonds.length == 0)
@@ -47,7 +44,10 @@ const appendEndSubsToChain = (mod) => {
 
   let append = (s, a, b) => s.length ? a+s.map(x => x.chain).join('-')+b : '';
 
-  mod.chain = `${append(fs, '', '-')}${mod.chain}${append(ls, '-', '')}`;
+  let fbond = fs.length == 1 && fs[0].chain == 'o' ? '=' : '-';
+  let lbond = ls.length == 1 && ls[0].chain == 'o' ? '=' : '-';
+
+  mod.chain = `${append(fs, '', fbond)}${mod.chain}${append(ls, lbond, '')}`;
   mod.subs = [...mod.subs
       .filter(x => x.carbon != 1 && x.carbon != cc)
       .map(m => {

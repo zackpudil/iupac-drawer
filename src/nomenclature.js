@@ -19,6 +19,16 @@ export const FUNCTIONAL_GROUPS = [
     { sub: 'oxo', main: 'one' }
 ];
 
+export const SUB_TO_ELEMENT_MAP = {
+    fluoro: 'f',
+    chloro: 'cl',
+    bromo: 'br',
+    iodo: 'i',
+    hydroxy: 'oH',
+    formyl: 'o',
+    oxo: 'o'
+};
+
 const toRegexOr = (table) => new RegExp(`(?:${table.reduce((p, a, i) => p += i == 0 ? a : "|"+a, "")})`, 'g');
 
 export const prefixOr = () => toRegexOr(PREFIX);

@@ -22,14 +22,14 @@ const rot = (a, x) => {
 
   if(base === 'tri') return 0;
 
-  if(base === 'sig') {
+  if(base === 'sig' || base == "upi") {
     if(x == sx) ang = 30;
     else ang = 60;
-  } else if(base.includes('pi') && !base.includes('c')) {
+  } else if(base.includes('pi') && !base.includes('c') && !base.includes('upi')) {
     if(x == sx) ang = 0;
-    else ang = base == 'tpi' ? -120 : 30;
+    else ang = base.includes('tpi') ? -120 : 30;
   } else if(base.includes('tri')) ang = 0;
-  else if(base == 'fsig') return -90;
+  else if(base == 'fsig' || base == 'fupi') return -90;
   else if(base.includes('c')) return cyclo(ud, base);
 
   return ang*(ud.includes('u') ? -1 : 1);
@@ -40,6 +40,8 @@ const path = (a) => {
   if(base == 'pi' || base == 'cpi' || base == 'ucpi') {
     let u = ud == 'u' ? -5 : 5;
     return `h30m-28,${u}h26`;
+  } else if (base.startsWith('u') && base.includes('pi') || base == 'fupi') {
+    return "m0,2h30m-30,-4h30";
   } else if(base == 'tri') {
     return "h30m-30,5h30m-30,-10h30";
   }
@@ -72,6 +74,7 @@ const draw = (tree, x, y) => {
 var sx;
 export default (tree, startx, starty, scale = 1) => {
   sx = startx;
+
   return `
     <g transform="scale(${scale})">
       ${draw(tree, startx, starty)}

@@ -11,18 +11,18 @@ function *extract(name, regex, tf = (s) => [s]) {
 }
 
 function *complexSubstituents(name)  {
-  const regex = /(\d(?:,\d)*-\(\d(?:,\d)*-?(?:\w|-|\d(?:,\d)*)*yl\))/g;
+  const regex = /(\d{1,2}(?:,\d{1,2})*-\(\d{1,2}(?:,\d{1,2})*-?(?:\w|-|\d{1,2}(?:,\d{1,2})*)*yl\))/g;
   let parse = (s) => {
     let sub = s
         .replace(/enyl\)/g, 'ene')
         .replace(/yl\)/g, 'ane')
         .replace(/\d(?:,\d)*-\(/g, '');
 
-    let idxs =  /(\d(?:,\d)*)-\(/g.exec(s)[1].split(',');
+    let idxs =  /(\d{1,2}(?:,\d{1,2})*)-\(/g.exec(s)[1].split(',');
 
     return idxs.map(i => ({
       carbon: Number(i),
-      chain: sub.replace(/\d?(?:,\d)*-?\w*(?:yl|mo|oro|do|xy)-?/g, ''),
+      chain: sub.replace(/\d{1,2}?(?:,\d{1,2})*-?\w*(?:yl|mo|oro|do|xy)-?/g, ''),
       subs: [...substituents(sub)]
     }));
   };
@@ -30,10 +30,10 @@ function *complexSubstituents(name)  {
 };
 
 function *substituents(name) {
-  const regex = /(?:^|-)(\d(?:,\d)*-\w*(?:yl|mo|oro|do|xy)(?!\)|\w*yl))/g;
+  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|do|xy)(?!\)|\w*yl))/g;
   let parse = (s) => {
-    let [...idxs] = extract(s, /(\d)/g);
-    let suf = s.replace(/\d(:?,\d)*-?/g, '');
+    let [...idxs] = extract(s, /(\d{1,2})/g);
+    let suf = s.replace(/\d{1,2}(:?,\d{1,2})*-?/g, '');
 
     return idxs.map(idx => ({ carbon: Number(idx), chain: suf.replace(/yl/g, 'ane') }));
   };
@@ -44,11 +44,11 @@ function *substituents(name) {
 const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
   .filter(fg => name.includes(fg.main))
   .map(fg => {
-    let match = composeExp(/(\d(?:,\d)*)?-?(?!\w*yl|mo|oro|do|xy)\w*~/g, fg.main).exec(name);
+    let match = composeExp(/(\d{1,2}(?:,\d{1,2})*)?-?(?!\w*yl|mo|oro|do|xy)\w*~/g, fg.main).exec(name);
 
     let newParent = name
-      .replace(composeExp(/-?(?:\d(?:,\d)*)?-?~?~1/g, prefixOr(), fg.main), 'e')
-      .replace(composeExp(/(?:\d(?:,\d)*)-((?:cyclo)?~(?!\w*en|\w*yn|\w*yl).)/g, infixOr()), '$1')
+      .replace(composeExp(/-?(?:\d{1,2}(?:,\d{1,2})*)?-?~?~1/g, prefixOr(), fg.main), 'e')
+      .replace(composeExp(/(?:\d{1,2}(?:,\d{1,2})*)-((?:cyclo)?~(?!\w*en|\w*yn|\w*yl).)/g, infixOr()), '$1')
       .replace(/ae$/g, 'ane');
 
     let idx = match[1] ? match[1] : '1';
@@ -61,8 +61,10 @@ export default (name) =>  {
   name = convertFunctionalGroups(name) || name;
   const regex = /((?:\w(?!yl|mo|oro|do|xy)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g;
 
-  return {
+  let ret = {
     chain: regex.exec(name)[1].replace(/^(?:-|yl|mo|oro|do|xy)*/g, ''),
     subs: [...complexSubstituents(name)].concat([...substituents(name)])
   };
+
+  return ret;
 };

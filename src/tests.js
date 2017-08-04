@@ -60,5 +60,5 @@ export const tests = [
   '3-fluoro-2-buten-1,2,4-triol', // 51
   '2-(2-propenyl)-1,3,4-butatriol', // 52
   '2-(2-propenyl)-1,3,4-cyclohexatriol', // 53
-  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-2,8-decadien-6-yn-1,4,9-triol' // 54
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-2,8-decadien-6-yn-1,4,10-triol' // 54
 ];

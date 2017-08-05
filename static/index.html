@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <title>Testing for IUPAC</title>
+  </head>
+
+  <body>
+    <div id="canvas">
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    var testId = location.hash.replace('#', '') || 0;
+    var getSVG = function (testId) {
+      $.get('/test/' + testId, function (data) {
+        $('#canvas').html(data);
+        console.log(testId);
+        location.hash = testId;
+      });
+    }
+
+    getSVG(testId);
+    $(document).keyup(function (event) {
+      if(event.key == 'ArrowLeft' || event.key == 'ArrowRight') {
+        if(event.key == 'ArrowLeft') testId--;
+        else testId++;
+        getSVG(testId);
+      }
+    });
+  </script>
+</html>

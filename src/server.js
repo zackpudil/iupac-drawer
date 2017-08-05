@@ -5,26 +5,24 @@ import tree from './tree';
 import model from './model';
 import draw from './draw';
 
-import * as util from 'util';
-
 import { tests } from './tests';
+
+import * as path from 'path';
 
 let app = express();
 
-app.get('/', (req, res) => {
-  res.send('IUPAC Drawer');
-});
+app.use('/static', express.static(path.join(__dirname, '../static')));
 
 app.get('/:name/draw', (req, res) => {
   res.send(`
-    <svg height="1000" width="1000">
+    <svg height="500" width="500">
       <style>
         path {
           fill: none;
           stroke: black;
           stroke-width: 1;
       </style>
-      ${draw(tree(model(parse(req.params.name))), 200, 200, req.query.scale)} 
+      ${draw(tree(model(parse(req.params.name))), 100, 200, req.query.scale)} 
     </svg>
   `); 
 }); 
@@ -32,5 +30,6 @@ app.get('/:name/draw', (req, res) => {
 app.get('/test/:id', (req, res) => {
   res.redirect(`/${tests[req.params.id]}/draw`);
 });
+
 
 app.listen(3000);

@@ -64,8 +64,8 @@ export const tests = [
   // ketones
   '2-propanone', // 55
   '2,3-butadione', // 56
-  '3-buten-1-one', // 57
-  '2,8-decadien-6-yn-1,4,5,10-tetrone', //58
+  '3-buten-2-one', // 57
+  '2,8-decadien-6-yn-4,5-dione', //58
   '1,3,5-cyclohexadien-1,2,3,4,5,6-hexone', // 59
   '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione', // 60
   '5-(2,3,4-trioxo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione', // 61

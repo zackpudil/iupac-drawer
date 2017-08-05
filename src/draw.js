@@ -29,7 +29,7 @@ const rot = (a, x) => {
     if(x == sx) ang = 0;
     else ang = base.includes('tpi') ? -120 : 30;
   } else if(base.includes('tri')) ang = 0;
-  else if(base == 'fsig') return 90*(ud == 'u' ? -1 : 1);
+  else if(base == 'fsig' || base == 'fcupi') return 90*(ud == 'u' ? -1 : 1);
   else if(base == 'fupi') return 60*(ud == 'u' ? -1 : 1);
   else if(base.includes('c')) return cyclo(ud, base);
 
@@ -41,7 +41,7 @@ const path = (a) => {
   if(base == 'pi' || base == 'cpi' || base == 'ucpi') {
     let u = ud == 'u' ? -5 : 5;
     return `h30m-28,${u}h26`;
-  } else if (base.startsWith('u') && base.includes('pi') || base == 'fupi') {
+  } else if (base.startsWith('u') && base.includes('pi') || base == 'fupi' || base == 'fcupi') {
     return "m0,2h30m-30,-4h30";
   } else if(base == 'tri') {
     return "h30m-30,5h30m-30,-10h30";

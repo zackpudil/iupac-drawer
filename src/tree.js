@@ -38,7 +38,7 @@ const build = (element, idx, carbon, up, primary) => {
     let sa = up ? 'u' : 'd';
     if(b.sub) [na,sa] = [sa, na];
 
-    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o)/g).length - 1;
+    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o|H)/g).length - 1;
     let cn = b.carbon - 1;
     let uc = !b.prim ? 'u' : '';
 
@@ -55,7 +55,7 @@ const build = (element, idx, carbon, up, primary) => {
     } 
     else if(b.next == '=') {
       if(b.cnext || (b.prev && !b.idx)) {
-        if(!b.prev) ret.angle = `${isCyclo(b.cnext) ? 'u' : 'd'}-fupi`;
+        if(!b.prev) ret.angle = `${isCyclo(b.cnext) ? 'u' : na}-fupi`;
         else if(b.prev == '=') ret.angle = `${sa}-uspi`;
         else if(b.cnext == '=') ret.angle =  `${sa}-utpi`;
         else ret.angle = `${isCyclo(b.prev) ? 'u' : na}-upi`;

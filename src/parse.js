@@ -51,8 +51,15 @@ const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
       .replace(composeExp(/(?:\d{1,2}(?:,\d{1,2})*)-((?:cyclo)?~(?!\w*en|\w*yn|\w*yl).)/g, infixOr()), '$1')
       .replace(/ae$/g, 'ane');
 
+    var sub;
     let idx = match[1] ? match[1] : '1';
-    let newName = `${idx}-${fg.sub}-${newParent}`;
+
+    if(name.match(/cyclo(?!\w*yl)/g)) 
+      sub = fg.cyclosub.replace('$', idx);
+    else
+      sub = fg.sub.replace('$', idx);
+
+    let newName = `${idx}-${sub}-${newParent}`;
 
     return newName;
   })[0];

@@ -1,5 +1,5 @@
 # iupac-drawer
-Api that draws molecular diagrams based on IUPAC nomenclature https://iupac.org/what-we-do/nomenclature/
+SVG Api that draws molecular diagrams based on IUPAC nomenclature https://iupac.org/what-we-do/nomenclature/
 
 ![screen shot](https://raw.githubusercontent.com/zackpudil/iupac-drawer/master/screenshot.png)
 

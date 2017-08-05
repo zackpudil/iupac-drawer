@@ -68,5 +68,24 @@ export const tests = [
   '2,8-decadien-6-yn-1,4,5,10-tetrone', //58
   '1,3,5-cyclohexadien-1,2,3,4,5,6-hexone', // 59
   '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione', // 60
-  '5-(2,3,4-trioxo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione'
+  '5-(2,3,4-trioxo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-3-chloro-6-decyn-2,4,9-trione', // 61
+  // aldehydes
+  'propanal', // 62
+  '1,3-propanal', // 63
+  '2-(2-hydroxy-cyclopropyl)-10-hydroxy-4,6,7-trioxo-2,8-decen-1-al', // 64
+  '5-(3-hydroxy-1,3,5-cyclohexenyl)-10-hydroxy-4-oxo-2,6,8-decen-1-al', // 65
+  '2-oxo-1,3-propanal', // 66
+  '5-(3-hydroxy-1,3,5-cyclohexenyl)-4-oxo-2,6,8-decen-1,10-dial', // 67
+  'cyclohexanal', // 68
+  '4-bromo-2-methylcyclopentanal', // 69
+  '1,3,5-cyclohexen-1-al', // 70
+  // carboxylic acid
+  'hexanoic acid', // 71 
+  '3,5-hexadien-1-oic acid', // 72
+  '2,6-heptadien-4-yne-1-oic acid', // 73
+  '2,6-octadien-4-yne-1,8-dioic acid', // 74
+  '5-(3-hydroxy-1,3,5-cyclohexenyl)-4-oxo-2,6,8-decen-1,10-dioic acid', // 75
+  'cyclohexanoic acid', // 76
+  '1,3,5-cyclohexen-2,4,6-trioic acid', // 77
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-4-hydroxy-3-chloro-2,8-decadien-6-yn-1,10-dioic acid' // 78
 ];

@@ -37,10 +37,14 @@ const stripChain = (name) => {
 };
 
 const appendEndSubsToChain = (mod) => {
-  if(!mod.subs.length || mod.chain.match(/(\/|\?)/g)) return mod;
+  if(!mod.subs.length || mod.chain.match(/(\/|\?)/g)) {
+    mod.subs = mod.subs.map(x => appendEndSubsToChain(x));
+    return mod;
+  }
   let cc = mod.chain.match(/c/g).length;
   let fs = mod.subs.filter(x => x.carbon == 1 && x.chain != 'o');
   let ls = mod.subs.filter(x => x.carbon == cc && x.chain != 'o');
+  if(cc == 1) fs = [];
 
   let append = (s, a, b) => s.length ? a+s.map(x => x.chain).join('-')+b : '';
 

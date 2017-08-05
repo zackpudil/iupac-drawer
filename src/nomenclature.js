@@ -6,7 +6,7 @@ export const composeExp = (rega, ...regs) => {
     });
 
     return new RegExp(src, 'g');
-}
+};
 
 export const PREFIX = ['di', 'tri', 'tetr', 'pent', 'hex', 'hept', 'oct', 'non', 'dec'];
 export const SUFFIX = ['ane', 'ene', 'yne', 'ol', 'al', 'one', 'oate', 'oic acid', 'amine'];
@@ -14,9 +14,10 @@ export const INFIX = ['meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct'
 export const SUB = ['yl', 'fluoro', 'chloro', 'bromo', 'iodo'];
 
 export const FUNCTIONAL_GROUPS = [
-    { sub: 'hydroxy', main: 'ol' },
-    { sub: 'formyl', main: 'al' },
-    { sub: 'oxo', main: 'one' }
+    { sub: 'hydroxy', cyclosub: 'hydroxy', main: 'ol' },
+    { sub: 'hydoro-$-oxo', cyclosub: '$-(1-hydoro-1-oxomethyl)', main: 'al' },
+    { sub: 'oxo', cyclosub: 'oxo', main: 'one' },
+    { sub: 'hydroxy-$-oxo', cyclosub: '$-(1-hydroxy-1-oxomethyl)', main: 'oic acid' }
 ];
 
 export const SUB_TO_ELEMENT_MAP = {
@@ -25,7 +26,7 @@ export const SUB_TO_ELEMENT_MAP = {
     bromo: 'br',
     iodo: 'i',
     hydroxy: 'oH',
-    formyl: 'o',
+    hydoro: 'H',
     oxo: 'o'
 };
 

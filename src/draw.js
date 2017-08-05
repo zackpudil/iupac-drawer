@@ -29,7 +29,8 @@ const rot = (a, x) => {
     if(x == sx) ang = 0;
     else ang = base.includes('tpi') ? -120 : 30;
   } else if(base.includes('tri')) ang = 0;
-  else if(base == 'fsig' || base == 'fupi') return 90*(ud == 'u' ? -1 : 1);
+  else if(base == 'fsig') return 90*(ud == 'u' ? -1 : 1);
+  else if(base == 'fupi') return 60*(ud == 'u' ? -1 : 1);
   else if(base.includes('c')) return cyclo(ud, base);
 
   return ang*(ud.includes('u') ? -1 : 1);

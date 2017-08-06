@@ -61,11 +61,25 @@ const appendEndSubsToChain = (mod) => {
   return mod;
 };
 
+const replacementSubs = (mod) => {
+  if(!mod.subs.length) return mod;
+  if(!mod.subs.some(m => m.chain == 'ox')) return mod;
+
+  let oxs = mod.subs.filter(m => m.chain == 'ox');
+  oxs.forEach(ox => {
+    let idx = mod.chain.split('c', ox.carbon).join('c').length;
+    mod.chain = mod.chain.substr(0, idx) + ox.chain.replace('x', '') + mod.chain.substr(idx + 1);
+  });
+  mod.subs = mod.subs.filter(m => m.chain != 'ox');
+
+  return mod;
+};
+
 export default (molecule) => {
   let recur = (mol) => Object.assign({}, mol, {
     chain: stripChain(mol.chain),
     subs: mol.subs ? mol.subs.map(sc => recur(sc)) : []
   });
 
-  return appendEndSubsToChain(recur(molecule));
+  return appendEndSubsToChain(replacementSubs(recur(molecule)));
 };

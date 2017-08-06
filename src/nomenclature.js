@@ -21,13 +21,14 @@ export const FUNCTIONAL_GROUPS = [
 ];
 
 export const SUB_TO_ELEMENT_MAP = {
-    fluoro: 'f',
-    chloro: 'cl',
-    bromo: 'br',
-    iodo: 'i',
-    hydroxy: 'oH',
-    hydoro: 'H',
-    oxo: 'o'
+  fluoro: 'f',
+  chloro: 'cl',
+  bromo: 'br',
+  iodo: 'i',
+  hydroxy: 'oH',
+  hydoro: 'H',
+  oxo: 'o',
+  oxa: 'ox'
 };
 
 const toRegexOr = (table) => new RegExp(`(?:${table.reduce((p, a, i) => p += i == 0 ? a : "|"+a, "")})`, 'g');
@@ -37,8 +38,16 @@ export const suffixOr = () => toRegexOr(SUFFIX);
 export const infixOr = () => toRegexOr(INFIX)
 export const subOr = () => toRegexOr(SUB);
 
-const getIndex = (table, name) =>  table.findIndex(s => name.includes(s)) + 1;
+const getIndex = (table, name) =>  table.findIndex(s => name.replace(/.*(?=yl)/, '').includes(s)) + 1;
 
 export const prefixCount = (name) => getIndex(PREFIX, name);
 export const suffixCount = (name) => getIndex(SUFFIX, name);
 export const infixCount = (name) => getIndex(INFIX, name);
+
+RegExp.prototype.getMatch = function (str) {
+  let match = this.exec(str);
+  if(match && match[1]) return match[1];
+  if(match && match[0]) return match[0];
+
+  return '';
+};

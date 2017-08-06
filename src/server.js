@@ -22,7 +22,7 @@ app.get('/:name/draw', (req, res) => {
           stroke: black;
           stroke-width: 1;
       </style>
-      ${draw(tree(model(parse(req.params.name))), 100, 200, req.query.scale)} 
+      ${draw(tree(model(parse(req.params.name))), 100, 150, req.query.scale)} 
     </svg>
   `); 
 }); 

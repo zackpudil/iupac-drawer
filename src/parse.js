@@ -24,7 +24,7 @@ function *complexSubstituents(name)  {
 
     return idxs.map(i => ({
       carbon: Number(i),
-      chain: sub.replace(/\d{1,2}?(?:,\d{1,2})*-?\w*(?:yl|mo|oro|xo|do|xy)-?/g, ''),
+      chain: sub.replace(/\d{1,2}?(?:,\d{1,2})*-?\w*(?:yl|mo|oro|xo|do|xy|oxa)-?/g, ''),
       subs: [...substituents(sub)]
     }));
   };
@@ -32,7 +32,7 @@ function *complexSubstituents(name)  {
 };
 
 function *substituents(name) {
-  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|xo|do|xy)(?!\)|\w*yl))/g;
+  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|xo|do|xy|oxa)(?!\)|\w*yl))/g;
   let parse = (s) => {
     let [...idxs] = extract(s, /(\d{1,2})/g);
     let suf = s.replace(/\d{1,2}(:?,\d{1,2})*-?/g, '');
@@ -45,11 +45,11 @@ function *substituents(name) {
 
 
 export default (name) =>  {
-  name = translate(name) || name;
-  const regex = /((?:\w(?!yl|mo|oro|xo|do|xy)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g;
+  name = translate(name);
+  const regex = /((?:\w(?!yl|mo|oro|xo|do|xy|oxa)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g;
 
   let ret = {
-    chain: regex.exec(name)[1].replace(/^(?:-|yl|mo|oro|xo|do|xy)*/g, ''),
+    chain: regex.exec(name)[1].replace(/^(?:-|yl|mo|oro|xo|do|xy|oxa)*/g, ''),
     subs: [...complexSubstituents(name)].concat([...substituents(name)])
   };
 

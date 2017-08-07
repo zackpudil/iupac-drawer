@@ -17,7 +17,8 @@ export const FUNCTIONAL_GROUPS = [
     { sub: 'hydroxy', cyclosub: 'hydroxy', main: 'ol' },
     { sub: 'hydoro-$-oxo', cyclosub: '$-(1-hydoro-1-oxomethyl)', main: 'al' },
     { sub: 'oxo', cyclosub: 'oxo', main: 'one' },
-    { sub: 'hydroxy-$-oxo', cyclosub: '$-(1-hydroxy-1-oxomethyl)', main: 'oic acid' }
+    { sub: 'hydroxy-$-oxo', cyclosub: '$-(1-hydroxy-1-oxomethyl)', main: 'oic acid' },
+    { sub: 'oxo', cyclosub: 'oxo', main: 'oate' }
 ];
 
 export const SUB_TO_ELEMENT_MAP = {

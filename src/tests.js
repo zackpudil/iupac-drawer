@@ -96,4 +96,11 @@ export const tests = [
   '2-methylbutoxy 3-ethyl-2-methylbutane', // 83
   '1,2-dimethylhexoxy ethanal', // 84
   '2,4-dimethyl-3-ethylhexoxy 2-methyl-3-bromopropane', // 85
+  // esters
+  'ethyl ethanoate', // 86
+  'ethyl 1-propenoate', // 87
+  '1-bromopropyl 1-hydroxyethanoate', // 88
+  '2-methylbutyl 3-ethyl-2-methylbutanoate', // 89
+  '1,2-dimethylhexyl 1-formylethanoate', // 90
+  '2,4-dimethyl-3-ethylhexyl 2-methyl-1-bromopropanoate', // 91
 ];

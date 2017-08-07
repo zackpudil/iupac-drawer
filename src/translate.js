@@ -13,6 +13,8 @@ const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
     var sub;
     let idx = match[1] || '1';
 
+    if(fg.main == 'oate') idx = /(\d)-oxxa/g.exec(name)[1] - 1;
+
     if(name.match(/cyclo(?!\w*yl)/g)) 
       sub = fg.cyclosub.replace('$', idx);
     else
@@ -23,17 +25,18 @@ const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
     return newName;
   })[0];
 
-const convertEthers = (name) => {
-  let oxy = /(.*(?:\d{1,2}(?:,\d{1,2})*)?-?\w*)oxy\s/g.getMatch(name);
+const convertEthersAndEsters = (name) => {
+  let oxy = /(.*(?:\d{1,2}(?:,\d{1,2})*)?-?\w*)(?:yl|oxy)\s/g.getMatch(name);
   if(!oxy) return name;
 
-  let main = name.replace(composeExp(/~oxy\s/g, oxy), '');
+  let main = name.replace(composeExp(/~(?:yl|oxy)\s/g, oxy), '');
 
   let oc = infixCount(oxy);
   let mc = infixCount(main);
 
-  let os = /.*(?:yl|mo|oro|xo|do|xy)/g.getMatch(oxy);
-  os = os.replace(/(\d{1,2})/g, (n) => Number(n) + mc + 1);
+  let os = /.*(?:yl|mo|oro|xo|do|xy)/g
+    .getMatch(oxy)
+    .replace(/(\d{1,2})/g, (n) => Number(n) + mc + 1);
 
   let ms = /.*(?:yl|mo|oro|xo|do|xy)/g.getMatch(main);
 
@@ -49,8 +52,13 @@ const convertEthers = (name) => {
   return `${os}${od}${ms}${md}${mc + 1}-oxxa-${sn}${sd}${INFIX[oc + mc]}${suf}`;
 };
 
+const quickFixes = (name) => {
+  return name
+    .replace(/(\d(?:,\d)*)-formyl/g, '$1-hydoro-$1-oxo')
+    .replace('oxa', 'oxxa');
+}
 
 export default (name) => {
-  let nn = convertEthers(name.replace('oxa', 'oxxa'));
+  let nn = convertEthersAndEsters(quickFixes(name));
   return convertFunctionalGroups(nn) || nn;
 }

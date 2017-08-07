@@ -38,7 +38,7 @@ const build = (element, idx, carbon, up, primary) => {
     let sa = up ? 'u' : 'd';
     if(b.sub) [na,sa] = [sa, na];
 
-    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o|H)/g).length - 1;
+    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o|H|ox|x$)/g).length - 1;
     let cn = b.carbon - 1;
     let uc = !b.prim ? 'u' : '';
 

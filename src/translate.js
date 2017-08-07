@@ -46,11 +46,11 @@ const convertEthers = (name) => {
   let md = getDash(ms);
   let sd = getDash(sn);
   
-  return `${os}${od}${ms}${md}${mc + 1}-oxa-${sn}${sd}${INFIX[oc + mc]}${suf}`;
+  return `${os}${od}${ms}${md}${mc + 1}-oxxa-${sn}${sd}${INFIX[oc + mc]}${suf}`;
 };
 
 
 export default (name) => {
-  let nn = convertEthers(name);
+  let nn = convertEthers(name.replace('oxa', 'oxxa'));
   return convertFunctionalGroups(nn) || nn;
 }

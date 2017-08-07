@@ -28,7 +28,7 @@ export const SUB_TO_ELEMENT_MAP = {
   hydroxy: 'oH',
   hydoro: 'H',
   oxo: 'o',
-  oxa: 'ox'
+  oxxa: 'ox'
 };
 
 const toRegexOr = (table) => new RegExp(`(?:${table.reduce((p, a, i) => p += i == 0 ? a : "|"+a, "")})`, 'g');

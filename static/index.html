@@ -5,17 +5,24 @@
   </head>
 
   <body>
+    <div id="element"></div>
     <div id="canvas">
     </div>
   </body>
 
   <script type="text/javascript">
     var testId = location.hash.replace('#', '') || 0;
-    var getSVG = function (testId) {
+    var getSVG = function () {
       $.get('/test/' + testId, function (data) {
-        $('#canvas').html(data);
-        console.log(testId);
+        if(!data) {
+          testId--;
+          return;
+        }
+        $('#element').html(data);
         location.hash = testId;
+        $.get('/' + data + '/draw', function (data) { 
+          $('#canvas').html(data);
+        });
       });
     }
 
@@ -24,7 +31,7 @@
       if(event.key == 'ArrowLeft' || event.key == 'ArrowRight') {
         if(event.key == 'ArrowLeft') testId--;
         else testId++;
-        getSVG(testId);
+        getSVG();
       }
     });
   </script>

@@ -28,7 +28,7 @@ app.get('/:name/draw', (req, res) => {
 }); 
 
 app.get('/test/:id', (req, res) => {
-  res.redirect(`/${tests[req.params.id]}/draw`);
+  res.send(tests[req.params.id]);
 });
 
 

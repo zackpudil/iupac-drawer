@@ -32,7 +32,9 @@ const stripChain = (name) => {
   if(bonds.length == 0)
     return 'c';
 
-  if(name.match(/cyclo/g)) return 'c'+bonds.join('c')+'c/c';
+  if(name.match(/cyclo/g))  
+    return 'c'+bonds.join('c')+'c/c';
+
   return 'c'+bonds.join('c')+'c';
 };
 
@@ -61,11 +63,28 @@ const appendEndSubsToChain = (mod) => {
   return mod;
 };
 
+const replacementSubs = (mod) => {
+  if(!mod.subs.length) return mod;
+  if(!mod.subs.some(m => m.chain.includes('x'))) return mod;
+
+  let reps = mod.subs.filter(m => m.chain.includes('x'));
+  reps.forEach(rep => {
+    let idx = mod.chain.split(/(c|o)/g, rep.carbon).join('c').length;
+    mod.chain = mod.chain.substr(0, idx) + rep.chain + mod.chain.substr(idx + 1);
+    if(rep.carbon == 1)
+      mod.chain = mod.chain.replace(/c$/g, 'x');
+  });
+
+  mod.subs = mod.subs.filter(m => !m.chain.includes('x'));
+
+  return mod;
+};
+
 export default (molecule) => {
   let recur = (mol) => Object.assign({}, mol, {
     chain: stripChain(mol.chain),
     subs: mol.subs ? mol.subs.map(sc => recur(sc)) : []
   });
 
-  return appendEndSubsToChain(recur(molecule));
+  return appendEndSubsToChain(replacementSubs(recur(molecule)));
 };

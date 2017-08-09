@@ -36,7 +36,7 @@ const rot = (a, x) => {
   return ang*(ud.includes('u') ? -1 : 1);
 };
 
-const path = (a) => {
+const path = (a, short) => {
   let { base, ud } = ext(a);
   if(base == 'pi' || base == 'cpi' || base == 'ucpi') {
     let u = ud == 'u' ? -5 : 5;
@@ -47,28 +47,40 @@ const path = (a) => {
     return "h30m-30,5h30m-30,-10h30";
   }
 
+  if(short) return "h25";
   return "h30";
 };
 
-const text = (type, x, y, start = false) => {
+const text = (type, up, x, y, start = false) => {
   if(type == 'c') return '';
 
+  let isRep = type.includes('x');
+  let rot = (isRep ? 30 : 0)*(up ? 1 : -1);
+  rot = start ? 0 : rot;
+
   return `
-    <text x="${x}" y="${y + 5}" text-anchor="${start ? "end" : "start"}">
-      ${type.replace(/^([a-z])/g, (n) => n.toUpperCase())}
+    <text x="${x}" y="${y + 5}" 
+      text-anchor="${isRep ? "middle" : start ? "end" :  "start"}" 
+      transform="rotate(${rot}, ${x}, ${y})">
+      ${type.replace(/^([a-z])/g, (n) => n.toUpperCase()).replace(/(x|X)/g, '')}
     </text>
   `;
 };
 
 const draw = (tree, x, y) => {
-  let p = x == sx ? text(tree.type, x, y, true) : '';
-  p += tree.bonds.filter(t => t.to.type != 'h').map(t => `
-    <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
-      <path d="M${x},${y}${path(t.angle)}" />
-      ${text(t.to.type, x + 30, y)}
-      ${draw(t.to, x + 30, y)}
-    </g>
-  `).join('');
+  let p = x == sx ? text(tree.type, false, x, y, true) : '';
+
+  p += tree.bonds.filter(t => t.to.type != 'h').map(t => {
+    let dx = tree.type.includes('x') ? 5 : 0;
+    let shorten = tree.type.includes('x') || t.to.type.includes('x');
+    return `
+      <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
+        <path d="M${x+dx},${y}${path(t.angle, shorten)}" />
+        ${text(t.to.type, t.angle.includes('u'), x + 30, y)}
+        ${draw(t.to, x + 30, y)}
+      </g>
+   `;
+  }).join('');
   return p.replace(/\s+(?![^<>]*>)/g, '');
 };
 

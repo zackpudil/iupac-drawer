@@ -87,5 +87,20 @@ export const tests = [
   '5-(3-hydroxy-1,3,5-cyclohexenyl)-4-oxo-2,6,8-decen-1,10-dioic acid', // 75
   'cyclohexanoic acid', // 76
   '1,3,5-cyclohexen-2,4,6-trioic acid', // 77
-  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-4-hydroxy-3-chloro-2,8-decadien-6-yn-1,10-dioic acid' // 78
+  '5-(4-bromo-1,3,5-cyclohexenyl)-8-(1-iodo-2-cyclopropylpropyl)-4-hydroxy-3-chloro-2,8-decadien-6-yn-1,10-dioic acid', // 78
+  // ethers
+  'ethoxy ethane', // 79
+  'ethoxy 2-propene', // 80
+  'butoxy 1-propene', // 81
+  '1-bromopropoxy ethanol', // 82
+  '2-methylbutoxy 3-ethyl-2-methylbutane', // 83
+  '1,2-dimethylhexoxy ethanal', // 84
+  '2,4-dimethyl-3-ethylhexoxy 2-methyl-3-bromopropane', // 85
+  // esters
+  'ethyl ethanoate', // 86
+  'ethyl 1-propenoate', // 87
+  '1-bromopropyl 1-hydroxyethanoate', // 88
+  '2-methylbutyl 3-ethyl-2-methylbutanoate', // 89
+  '1,2-dimethylhexyl 1-formylethanoate', // 90
+  '2,4-dimethyl-3-ethylhexyl 2-methyl-1-bromopropanoate', // 91
 ];

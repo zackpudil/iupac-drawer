@@ -13,7 +13,7 @@ const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
     var sub;
     let idx = match[1] || '1';
 
-    if(fg.main == 'oate') idx = /(\d)-oxxa/g.exec(name)[1] - 1;
+    if(fg.main == 'oate') idx = /(\d)-oxxa(?![^\(\)]*\))/g.exec(name)[1] - 1;
 
     if(name.match(/cyclo(?!\w*yl)/g)) 
       sub = fg.cyclosub.replace('$', idx);
@@ -55,7 +55,7 @@ const convertEthersAndEsters = (name) => {
 const quickFixes = (name) => {
   return name
     .replace(/(\d(?:,\d)*)-formyl/g, '$1-hydoro-$1-oxo')
-    .replace('oxa', 'oxxa');
+    .replace(/oxa/g, 'oxxa');
 }
 
 export default (name) => {

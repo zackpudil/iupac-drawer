@@ -98,13 +98,15 @@ export const tests = [
   '2,4-dimethyl-3-ethylhexoxy 2-methyl-3-bromopropane', // 85
   '2-(2,4-dimethyl-3-bromo-pentyl)-3-ethylhexoxy 2-methyl-1-bromopropane', // 86
   '1-(1,3,4-trioxa-5-cyclohexenyl)butoxy%202-(3-bromo-cyclopentyl)butane', // 87
+  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butoxy 2-(4-oxa-3-bromo-2,5-cyclopentenyl)butane', // 88
   // esters
-  'ethyl ethanoate', // 88
-  'ethyl 1-propenoate', // 89
-  '1-bromopropyl 1-hydroxyethanoate', // 90
-  '2-methylbutyl 3-ethyl-2-methylbutanoate', // 91
-  '1,2-dimethylhexyl 1-formylethanoate', // 92
-  '2,4-dimethyl-3-ethylhexyl 2-methyl-1-bromopropanoate', // 93
-  '2-(2,4-dimethyl-3-bromo-pentyl)-3-ethylhexyl 2-methyl-1-bromopropanoate', // 94
-  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(3-bromo-cyclopentyl)butanoate' // 94
+  'ethyl ethanoate', // 89
+  'ethyl 1-propenoate', // 90
+  '1-bromopropyl 1-hydroxyethanoate', // 91
+  '2-methylbutyl 3-ethyl-2-methylbutanoate', // 92
+  '1,2-dimethylhexyl 1-formylethanoate', // 93
+  '2,4-dimethyl-3-ethylhexyl 2-methyl-1-bromopropanoate', // 94
+  '2-(2,4-dimethyl-3-bromo-pentyl)-3-ethylhexyl 2-methyl-1-bromopropanoate', // 95
+  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(3-bromo-cyclopentyl)butanoate', // 96
+  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(4-oxa-3-bromo-2,5-cyclopentenyl)butanoate' // 97
 ];

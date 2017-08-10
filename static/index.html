@@ -12,34 +12,21 @@
   </body>
 
   <script type="text/javascript">
-    var testId = location.hash.replace('#', '') || 0;
-    var getSVG = function () {
-      if(testId < 0) {
-        testId = 0;
-        return;
-      }
-      $.get('/test/' + testId, function (data) {
-        if(!data) {
-          testId--;
-          return;
-        }
-
-        $('#element').html(data);
-        location.hash = testId;
-
-        $.get('/' + data + '/draw', function (data) { 
-          $('#canvas').html(data);
-        });
+    let idx = new Number(location.hash.replace('#', ''));
+    const req = (url) => ({ url: url, responseType: 'text' });
+    Rx.Observable.fromEvent(document, 'keydown')
+      .startWith(idx)
+      .do(event => {
+        if(event.key == "ArrowRight") idx++;
+        else if(event.key == "ArrowLeft") idx--;
+      })
+      .filter(e => e == idx || e.key == "ArrowRight" || e.key == "ArrowLeft")
+      .switchMap(() => Rx.Observable.ajax(req(`/test/${idx}`)))
+      .do(r => r.response ? $('#element').html(r.response) : (idx < 0 ? idx++ : idx--))
+      .switchMap(r => r.response ? Rx.Observable.ajax(req(`/${r.response}/draw`)) : Rx.Observable.never())
+      .subscribe(r => {
+        location.hash = idx;
+        $('#canvas').html(r.response);
       });
-    }
-
-    getSVG(testId);
-    $(document).keydown(function (event) {
-      if(event.key == 'ArrowLeft' || event.key == 'ArrowRight') {
-        if(event.key == 'ArrowLeft') testId--;
-        else testId++;
-        getSVG();
-      }
-    });
   </script>
 </html>

@@ -36,19 +36,17 @@ const rot = (a, x) => {
   return ang*(ud.includes('u') ? -1 : 1);
 };
 
-const path = (a, short) => {
+const path = (a, dx) => {
   let { base, ud } = ext(a);
   if(base == 'pi' || base == 'cpi' || base == 'ucpi') {
     let u = ud == 'u' ? -5 : 5;
-    return `h30m-28,${u}h26`;
+    return `h${30 - dx}m${-28 + dx},${u}h${26 - dx}`;
   } else if (base.startsWith('u') && base.includes('pi') || base == 'fupi' || base == 'fcupi') {
     return "m0,2h30m-30,-4h30";
   } else if(base == 'tri') {
     return "h30m-30,5h30m-30,-10h30";
   }
-
-  if(short) return "h25";
-  return "h30";
+  return `h${30 - dx}`;
 };
 
 const text = (type, up, x, y, start = false) => {
@@ -69,13 +67,14 @@ const text = (type, up, x, y, start = false) => {
 
 const draw = (tree, x, y) => {
   let p = x == sx ? text(tree.type, false, x, y, true) : '';
+  let fromNonCarbon = tree.type.includes('x');
 
   p += tree.bonds.filter(t => t.to.type != 'h').map(t => {
-    let dx = tree.type.includes('x') ? 5 : 0;
-    let shorten = tree.type.includes('x') || t.to.type.includes('x');
+    let toNonCarbon = t.to.type.includes('x');
+    let dx = fromNonCarbon ? 5 : 0;
     return `
       <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
-        <path d="M${x+dx},${y}${path(t.angle, shorten)}" />
+        <path d="M${x+dx},${y}${path(t.angle, dx + (toNonCarbon ? 5 : 0))}" />
         ${text(t.to.type, t.angle.includes('u'), x + 30, y)}
         ${draw(t.to, x + 30, y)}
       </g>

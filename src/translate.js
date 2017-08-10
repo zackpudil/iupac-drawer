@@ -29,16 +29,16 @@ const convertEthersAndEsters = (name) => {
   let oxy = /(.*(?:\d{1,2}(?:,\d{1,2})*)?-?\w*)(?:yl|oxy)\s/g.getMatch(name);
   if(!oxy) return name;
 
-  let main = name.replace(composeExp(/~(?:yl|oxy)\s/g, oxy), '');
+  let main = name.replace(/.*\s/g, '');
 
   let oc = infixCount(oxy);
   let mc = infixCount(main);
 
-  let os = /.*(?:yl|mo|oro|xo|do|xy)/g
+  let os = /.*(?:yl|mo|oro|xo|do|xy)\)?/g
     .getMatch(oxy)
-    .replace(/(\d{1,2})/g, (n) => Number(n) + mc + 1);
+    .replace(/(\d{1,2})(?![^\(\)]*\))/g, (n) => Number(n) + mc + 1);
 
-  let ms = /.*(?:yl|mo|oro|xo|do|xy)/g.getMatch(main);
+  let ms = /.*(?:yl|mo|oro|xo|do|xy)\)?/g.getMatch(main);
 
   let suf = composeExp(/.*~(\w*)$/g, infixOr()).getMatch(main);
   let sn = /-?(\d(?:,\d)*)(?=.*en)(?!.*(?:yl|mo))/g.getMatch(main);

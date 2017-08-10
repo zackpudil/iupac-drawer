@@ -32,7 +32,7 @@ function *complexSubstituents(name)  {
 };
 
 function *substituents(name) {
-  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|xo|do|xy|xxa)(?!\)|\w*yl))/g;
+  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|xo|do|xy|xxa)(?![^\(\)]*\)|\w*yl))/g;
   let parse = (s) => {
     let [...idxs] = extract(s, /(\d{1,2})/g);
     let suf = s.replace(/\d{1,2}(:?,\d{1,2})*-?/g, '');

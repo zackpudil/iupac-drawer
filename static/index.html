@@ -1,6 +1,7 @@
 <html>
   <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.2/Rx.js"></script>
     <title>Testing for IUPAC</title>
   </head>
 
@@ -13,13 +14,19 @@
   <script type="text/javascript">
     var testId = location.hash.replace('#', '') || 0;
     var getSVG = function () {
+      if(testId < 0) {
+        testId = 0;
+        return;
+      }
       $.get('/test/' + testId, function (data) {
         if(!data) {
           testId--;
           return;
         }
+
         $('#element').html(data);
         location.hash = testId;
+
         $.get('/' + data + '/draw', function (data) { 
           $('#canvas').html(data);
         });
@@ -27,7 +34,7 @@
     }
 
     getSVG(testId);
-    $(document).keyup(function (event) {
+    $(document).keydown(function (event) {
       if(event.key == 'ArrowLeft' || event.key == 'ArrowRight') {
         if(event.key == 'ArrowLeft') testId--;
         else testId++;

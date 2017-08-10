@@ -67,15 +67,23 @@ const replacementSubs = (mod) => {
   if(!mod.subs.length) return mod;
   if(!mod.subs.some(m => m.chain.includes('x'))) return mod;
 
-  let reps = mod.subs.filter(m => m.chain.includes('x'));
-  reps.forEach(rep => {
-    let idx = mod.chain.split(/(c|o)/g, rep.carbon).join('c').length;
-    mod.chain = mod.chain.substr(0, idx) + rep.chain + mod.chain.substr(idx + 1);
-    if(rep.carbon == 1)
-      mod.chain = mod.chain.replace(/c$/g, 'x');
-  });
+  mod.subs
+    .filter(m => m.chain.includes('x'))
+    .forEach(rep => {
+      let idx = mod.chain.split(/(c|ox)/g, rep.carbon).join('c').length;
+      while(mod.chain[idx] != 'c') {
+        idx += 1;
+        if(mod.chain.length < idx) break;
+      }
 
-  mod.subs = mod.subs.filter(m => !m.chain.includes('x'));
+      mod.chain = mod.chain.substr(0, idx) + rep.chain + mod.chain.substr(idx + 1);
+
+      if(rep.carbon == 1 && (mod.chain.includes('/') || mod.chain.includes('?')))
+        mod.chain = mod.chain.replace(/c$/g, 'x');
+    });
+
+  mod.subs = mod.subs.map(m => replacementSubs(m));
+  mod.subs = mod.subs.filter(m => m.chain != 'ox');
 
   return mod;
 };

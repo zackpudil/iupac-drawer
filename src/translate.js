@@ -1,9 +1,9 @@
-import { prefixOr, infixOr, infixCount, composeExp, FUNCTIONAL_GROUPS, INFIX } from './nomenclature';
+import { prefixOr, subPreOr, infixOr, infixCount, composeExp, FUNCTIONAL_GROUPS, INFIX } from './nomenclature';
 
-const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
-  .filter(fg => name.includes(fg.main))
+const functionalGroups = (name) => FUNCTIONAL_GROUPS
+  .filter(fg => name.endsWith(fg.main))
   .map(fg => {
-    let match = composeExp(/(\d{1,2}(?:,\d{1,2})*)?-?(?!\w*yl|mo|oro|xo|do|xy)\w*~/g, fg.main).exec(name);
+    let match = composeExp(/(\d{1,2}(?:,\d{1,2})*)?-?(?!\w*~)\w*~1/g, subPreOr(), fg.main).exec(name);
 
     let newParent = name
       .replace(composeExp(/-?(?:\d{1,2}(?:,\d{1,2})*)?-?~?~1/g, prefixOr(), fg.main), 'e')
@@ -25,7 +25,7 @@ const convertFunctionalGroups = (name) => FUNCTIONAL_GROUPS
     return newName;
   })[0];
 
-const convertEthersAndEsters = (name) => {
+const ethers = (name) => {
   let oxy = /(.*(?:\d{1,2}(?:,\d{1,2})*)?-?\w*)(?:yl|oxy)\s/g.getMatch(name);
   if(!oxy) return name;
 
@@ -34,11 +34,11 @@ const convertEthersAndEsters = (name) => {
   let oc = infixCount(oxy);
   let mc = infixCount(main);
 
-  let os = /.*(?:yl|mo|oro|xo|do|xy)\)?/g
+  let os = composeExp(/.*~\)?/g, subPreOr())
     .getMatch(oxy)
     .replace(/(\d{1,2})(?![^\(\)]*\))/g, (n) => Number(n) + mc + 1);
 
-  let ms = /.*(?:yl|mo|oro|xo|do|xy)\)?/g.getMatch(main);
+  let ms = composeExp(/.*~\)?/g, subPreOr()).getMatch(main);
 
   let suf = composeExp(/.*~(\w*)$/g, infixOr()).getMatch(main);
   let sn = /-?(\d(?:,\d)*)(?=.*en)(?!.*(?:yl|mo))/g.getMatch(main);
@@ -52,13 +52,28 @@ const convertEthersAndEsters = (name) => {
   return `${os}${od}${ms}${md}${mc + 1}-oxxa-${sn}${sd}${INFIX[oc + mc]}${suf}`;
 };
 
-const quickFixes = (name) => {
+const amines = (name) => {
+  if(!name.includes('N')) return name;
+
+  name = name.replace('amine', 'e');
+  let cc = infixCount(name) + 1;
+  let nx = name.match(/N/g).length == 1 ? 'haza' : 'aza';
+
+  name = name
+    .replace(/N/g, cc)
+    .replace(composeExp(/~(ane|ene|yne)/g, INFIX[cc - 2]), INFIX[cc - 1] + '$1');
+
+  return `${cc}-${nx}-${name}`;
+};
+
+const fixes = (name) => {
   return name
     .replace(/(\d(?:,\d)*)-formyl/g, '$1-hydoro-$1-oxo')
-    .replace(/oxa/g, 'oxxa');
+    .replace(/oxa/g, 'oxxa')
+    .replace(/ylamine/g, 'anamine');
 }
 
 export default (name) => {
-  let nn = convertEthersAndEsters(quickFixes(name));
-  return convertFunctionalGroups(nn) || nn;
+  let nn = amines(ethers(fixes(name)));
+  return functionalGroups(nn) || nn;
 }

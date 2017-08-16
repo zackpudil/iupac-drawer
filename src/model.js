@@ -32,8 +32,10 @@ const stripChain = (name) => {
   if(bonds.length == 0)
     return 'c';
 
-  if(name.match(/cyclo/g))  
-    return 'c'+bonds.join('c')+'c/c';
+  if(name.match(/cyclo/g))   {
+    let lastBond = name.match(composeExp(/(~)-?\w*en/g, infixCount(infixOr().getMatch(name)))) ? '?' : '/';
+    return 'c'+bonds.join('c')+'c' + lastBond + 'c';
+  }
 
   return 'c'+bonds.join('c')+'c';
 };
@@ -70,7 +72,7 @@ const replacementSubs = (mod) => {
   mod.subs
     .filter(m => m.chain.includes('x'))
     .forEach(rep => {
-      let idx = mod.chain.split(/(c|ox)/g, rep.carbon).join('c').length;
+      let idx = mod.chain.split(/(c|ox|nx|nHx)/g, rep.carbon).join('c').length;
       while(mod.chain[idx] != 'c') {
         idx += 1;
         if(mod.chain.length < idx) break;
@@ -83,7 +85,7 @@ const replacementSubs = (mod) => {
     });
 
   mod.subs = mod.subs.map(m => replacementSubs(m));
-  mod.subs = mod.subs.filter(m => m.chain != 'ox');
+  mod.subs = mod.subs.filter(m => ['ox', 'nx', 'nHx'].indexOf(m.chain) == -1);
 
   return mod;
 };

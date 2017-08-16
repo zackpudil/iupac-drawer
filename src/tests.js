@@ -108,5 +108,15 @@ export const tests = [
   '2,4-dimethyl-3-ethylhexyl 2-methyl-1-bromopropanoate', // 94
   '2-(2,4-dimethyl-3-bromo-pentyl)-3-ethylhexyl 2-methyl-1-bromopropanoate', // 95
   '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(3-bromo-cyclopentyl)butanoate', // 96
-  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(4-oxa-3-bromo-2,5-cyclopentenyl)butanoate' // 97
+  '1,2-(1,3,4-trioxa-5-cyclohexenyl)butyl 2-(4-oxa-3-bromo-2,5-cyclopentenyl)butanoate', // 97
+  '1,2-(3,4-trioxa-1,5-cyclohexenyl)butyl 2-(4-oxa-3-bromo-2,5-cyclopentenyl)-2-butenoate', // 98
+  // amines
+  'propylamine', // 99
+  '2-propylamine', // 100
+  '1,2-propadiamine', // 101
+  'N-methylethylamine', // 102
+  'N-(1-bromo-hexyl)ethylamine', // 103
+  'N-(1,3,5-cyclohexenyl)butylamine', // 104
+  'N,N-dimethylethylamine', // 105
+  'N,N-(1,3,5-cyclohexenyl)butylamine', // 106
 ];

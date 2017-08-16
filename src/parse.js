@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import  { prefixOr, suffixOr, subOr, infixOr, composeExp } from './nomenclature';
+import  { prefixOr, suffixOr, subOr, subPreOr, infixOr, composeExp } from './nomenclature';
 
 import translate from './translate';
 
@@ -24,7 +24,7 @@ function *complexSubstituents(name)  {
 
     return idxs.map(i => ({
       carbon: Number(i),
-      chain: sub.replace(/\d{1,2}?(?:,\d{1,2})*-?\w*(?:yl|mo|oro|xo|do|xy|xxa)-?/g, ''),
+      chain: sub.replace(composeExp(/\d{1,2}?(?:,\d{1,2})*-?\w*~-?/g, subPreOr()), ''),
       subs: [...substituents(sub)]
     }));
   };
@@ -32,7 +32,7 @@ function *complexSubstituents(name)  {
 };
 
 function *substituents(name) {
-  const regex = /(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*(?:yl|mo|oro|xo|do|xy|xxa)(?![^\(\)]*\)|\w*yl))/g;
+  const regex = composeExp(/(?:^|-)(\d{1,2}(?:,\d{1,2})*-\w*~(?![^\(\)]*\)|\w*yl))/g, subPreOr());
   let parse = (s) => {
     let [...idxs] = extract(s, /(\d{1,2})/g);
     let suf = s.replace(/\d{1,2}(:?,\d{1,2})*-?/g, '');
@@ -46,10 +46,10 @@ function *substituents(name) {
 
 export default (name) =>  {
   name = translate(name);
-  const regex = /((?:\w(?!yl|mo|oro|xo|do|xy|xxa)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g;
+  const regex = composeExp(/((?:\w(?!~)|-|\d(?:,\d)*)*(?:ane|yne|ene))/g, subPreOr());
 
   let ret = {
-    chain: regex.exec(name)[1].replace(/^(?:-|yl|mo|oro|xo|do|xy|xxa)*/g, ''),
+    chain: regex.exec(name)[1].replace(composeExp(/^(?:-|~)*/g, subPreOr()), ''),
     subs: [...complexSubstituents(name)].concat([...substituents(name)])
   };
 

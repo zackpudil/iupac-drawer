@@ -18,7 +18,8 @@ export const FUNCTIONAL_GROUPS = [
     { sub: 'hydoro-$-oxo', cyclosub: '$-(1-hydoro-1-oxomethyl)', main: 'al' },
     { sub: 'oxo', cyclosub: 'oxo', main: 'one' },
     { sub: 'hydroxy-$-oxo', cyclosub: '$-(1-hydroxy-1-oxomethyl)', main: 'oic acid' },
-    { sub: 'oxo', cyclosub: 'oxo', main: 'oate' }
+    { sub: 'oxo', cyclosub: 'oxo', main: 'oate' },
+    { sub: 'amino', cyclosub: 'amino', main: 'amine' }
 ];
 
 export const SUB_TO_ELEMENT_MAP = {
@@ -29,7 +30,10 @@ export const SUB_TO_ELEMENT_MAP = {
   hydroxy: 'oH',
   hydoro: 'H',
   oxo: 'o',
-  oxxa: 'ox'
+  oxxa: 'ox',
+  amino: 'nH2',
+  haza: 'nHx',
+  aza: 'nx'
 };
 
 const toRegexOr = (table) => new RegExp(`(?:${table.reduce((p, a, i) => p += i == 0 ? a : "|"+a, "")})`, 'g');
@@ -38,6 +42,7 @@ export const prefixOr = () => toRegexOr(PREFIX);
 export const suffixOr = () => toRegexOr(SUFFIX);
 export const infixOr = () => toRegexOr(INFIX)
 export const subOr = () => toRegexOr(SUB);
+export const subPreOr = () => /(?:yl|mo|oro|xo|do|xy|xxa|ino|za)/g;
 
 const getIndex = (table, name) =>  table.findIndex(s => name.replace(/.*(?=yl)/, '').includes(s)) + 1;
 

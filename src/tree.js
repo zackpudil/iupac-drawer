@@ -4,7 +4,7 @@ const h = { type: 'h' };
 
 const build = (element, idx, carbon, up, primary) => {
   const toNextBond = () => {
-    for(let i = 1; i <= 2; i++)  {
+    for(let i = 1; i <= 3; i++)  {
       if(idx + i >= element.chain.length) return i;
       if(['-', '=', '/', '?', '~'].indexOf(element.chain[idx + i]) > -1) return i;
     }
@@ -27,18 +27,17 @@ const build = (element, idx, carbon, up, primary) => {
   if(idx >= element.chain.length) return h;
   let ret = { type: element.chain.substr(idx, toNextBond()) };
 
-  
-  let bonds = element.subs
+  let bonds = [bond(element, false, primary)];
+  bonds = bonds.concat(element.subs
     .filter(s => s.carbon == carbon)
-    .map(s => bond(s, true, false));
-  bonds.push(bond(element, false, primary));
+    .map(s => bond(s, true, false)));
 
-  ret.bonds = bonds.map(b => {
+  ret.bonds = bonds.map((b, idx) => {
     let na = up ? 'd' : 'u';
     let sa = up ? 'u' : 'd';
     if(b.sub) [na,sa] = [sa, na];
 
-    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o|H|ox|x$)/g).length - 1;
+    let cc = b.element.chain.match(/(c|f|cl|br|i|oH|o|H|ox|x$|nx|nHx)/g).length - 1;
     let cn = b.carbon - 1;
     let uc = !b.prim ? 'u' : '';
 
@@ -51,7 +50,7 @@ const build = (element, idx, carbon, up, primary) => {
       else if(b.cnext == '=') ret.angle = `${sa}-tpi`;
       else if(isCyclo(b.prev)) ret.angle = 'u-sig';
       else if(isCyclo(b.cnext)) ret.angle = 'u-fsig';
-      else ret.angle = `${na}-sig`;
+      else ret.angle = `${na}-${idx == 2 ? '2' : ''}sig`;
     } 
     else if(b.next == '=') {
       if(b.cnext || (b.prev && !b.idx)) {

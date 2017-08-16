@@ -25,7 +25,8 @@ const rot = (a, x) => {
   if(base === 'sig' || base == "upi") {
     if(x == sx) ang = 30;
     else ang = 60;
-  } else if(base.includes('pi') && !base.includes('c') && !base.includes('upi')) {
+  } else if (base == '2sig') ang = -90;
+  else if(base.includes('pi') && !base.includes('c') && !base.includes('upi')) {
     if(x == sx) ang = 0;
     else ang = base.includes('tpi') ? -120 : 30;
   } else if(base.includes('tri')) ang = 0;
@@ -58,9 +59,15 @@ const text = (type, up, x, y, start = false) => {
 
   return `
     <text x="${x}" y="${y + 5}" 
-      text-anchor="${isRep ? "middle" : start ? "end" :  "start"}" 
-      transform="rotate(${rot}, ${x}, ${y})">
-      ${type.replace(/^([a-z])/g, (n) => n.toUpperCase()).replace(/(x|X)/g, '')}
+        text-anchor="${isRep ? "middle" : start ? "end" :  "start"}" 
+        transform="rotate(${rot}, ${x}, ${y})">
+      ${type
+        .replace(/^([a-z])/g, (n) => n.toUpperCase())
+        .replace(/(x|X)/g, '')
+        .replace(/\d/g, '')}
+        <tspan baseline-shift="sub" style="font-size: 8px !important;">
+          ${/(\d)/g.getMatch(type)}
+        </tspan>
     </text>
   `;
 };
@@ -72,14 +79,19 @@ const draw = (tree, x, y) => {
   p += tree.bonds.filter(t => t.to.type != 'h').map(t => {
     let toNonCarbon = t.to.type.includes('x');
     let dx = fromNonCarbon ? 5 : 0;
+    let tdx = toNonCarbon ? 5 : 0;
+
+    if(tree.type.includes('H') && fromNonCarbon) dx += 5;
+    if(t.to.type.includes('H') && toNonCarbon) tdx += 5;
+
     return `
       <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
-        <path d="M${x+dx},${y}${path(t.angle, dx + (toNonCarbon ? 5 : 0))}" />
+        <path d="M${x+dx},${y}${path(t.angle, dx + (tdx))}" />
         ${text(t.to.type, t.angle.includes('u'), x + 30, y)}
         ${draw(t.to, x + 30, y)}
-      </g>
-   `;
+      </g>`;
   }).join('');
+
   return p.replace(/\s+(?![^<>]*>)/g, '');
 };
 

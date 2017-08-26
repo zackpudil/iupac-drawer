@@ -50,16 +50,27 @@ const path = (a, dx) => {
   return `h${30 - dx}`;
 };
 
-const text = (type, up, x, y, start = false) => {
+const text = (type, up, x, y, angs, start = false) => {
   if(type == 'c') return '';
 
   let isRep = type.includes('x');
-  let rot = (isRep ? 30 : 0)*(up ? 1 : -1);
-  rot = start ? 0 : rot;
+  let rot = -angs.reduce((a, b) => a + b, 0);
+
+  var anchor, dy = 0;
+  if(Math.abs(rot) == 90 || isRep)  {
+    anchor = "middle"
+    dy = rot > 0 ? 0 : 10;
+  } else if(Math.abs(rot) > 90 || start) {
+    anchor = "end"
+    dy = 5;
+  } else if(Math.abs(rot) < 90) {
+    anchor = "start"
+    dy = 5;
+  }
 
   return `
-    <text x="${x}" y="${y + 5}" 
-        text-anchor="${isRep ? "middle" : start ? "end" :  "start"}" 
+    <text x="${x}" y="${y + (isRep ? 5 :  dy)}" 
+        text-anchor="${anchor}" 
         transform="rotate(${rot}, ${x}, ${y})">
       ${type
         .replace(/^([a-z])/g, (n) => n.toUpperCase())
@@ -72,11 +83,12 @@ const text = (type, up, x, y, start = false) => {
   `;
 };
 
-const draw = (tree, x, y) => {
-  let p = x == sx ? text(tree.type, false, x, y, true) : '';
+const draw = (tree, x, y, angs) => {
+  let p = x == sx ? text(tree.type, false, x, y, angs, true) : '';
   let fromNonCarbon = tree.type.includes('x');
 
   p += tree.bonds.filter(t => t.to.type != 'h').map(t => {
+
     let toNonCarbon = t.to.type.includes('x');
     let dx = fromNonCarbon ? 5 : 0;
     let tdx = toNonCarbon ? 5 : 0;
@@ -84,11 +96,14 @@ const draw = (tree, x, y) => {
     if(tree.type.includes('H') && fromNonCarbon) dx += 5;
     if(t.to.type.includes('H') && toNonCarbon) tdx += 5;
 
+    let r = rot(t.angle, x);
+    let c_angs = [...angs, r];
+
     return `
-      <g transform="rotate(${rot(t.angle, x)}, ${x}, ${y})">
+      <g transform="rotate(${r}, ${x}, ${y})">
         <path d="M${x+dx},${y}${path(t.angle, dx + (tdx))}" />
-        ${text(t.to.type, t.angle.includes('u'), x + 30, y)}
-        ${draw(t.to, x + 30, y)}
+        ${text(t.to.type, t.angle.includes('u'), x + 30, y, c_angs)}
+        ${draw(t.to, x + 30, y, c_angs)}
       </g>`;
   }).join('');
 
@@ -101,7 +116,7 @@ export default (tree, startx, starty, scale = 1) => {
 
   return `
     <g transform="scale(${scale})">
-      ${draw(tree, startx, starty)}
+      ${draw(tree, startx, starty, [])}
     </g>
   `;
 };

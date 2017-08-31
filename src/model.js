@@ -45,9 +45,10 @@ const appendEndSubsToChain = (mod) => {
     mod.subs = mod.subs.map(x => appendEndSubsToChain(x));
     return mod;
   }
-  let cc = mod.chain.match(/c/g).length;
-  let fs = mod.subs.filter(x => x.carbon == 1 && x.chain != 'o');
-  let ls = mod.subs.filter(x => x.carbon == cc && x.chain != 'o');
+
+  let cc = mod.chain.match(/(c|nHx)/g).length;
+  let fs = mod.subs.filter(x => x.carbon == 1 && !x.chain.match(/(\/|\?)/g) && x.chain != 'o');
+  let ls = mod.subs.filter(x => x.carbon == cc && !x.chain.match(/(\/|\?)/g) && x.chain != 'o');
   if(cc == 1) fs = [];
 
   let append = (s, a, b) => s.length ? a+s.map(x => x.chain).join('-')+b : '';
@@ -55,13 +56,18 @@ const appendEndSubsToChain = (mod) => {
   let fbond = fs.length == 1 && fs[0].chain == 'o' ? '=' : '-';
   let lbond = ls.length == 1 && ls[0].chain == 'o' ? '=' : '-';
 
+  let childSubs = mod.subs
+    .filter(s => s.carbon == 1 || s.carbon == cc)
+    .reduce((a, b) => a.concat(b.subs), [])
+    .map(s => { s.carbon += cc; return s; });
+
   mod.chain = `${append(fs, '', fbond)}${mod.chain}${append(ls, lbond, '')}`;
   mod.subs = [...mod.subs
-      .filter(x => (x.carbon != 1 && x.carbon != cc) || x.chain == 'o')
+      .filter(x => (x.carbon != 1 && x.carbon != cc) || x.chain.match(/(\/|\?)/g) || x.chain == 'o')
       .map(m => {
         m.carbon += fs.length ? 1 : 0;
         return m;
-      })];
+      }), ...childSubs];
   return mod;
 };
 

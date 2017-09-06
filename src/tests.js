@@ -119,4 +119,5 @@ export const tests = [
   'N-(1,3,5-cyclohexenyl)butylamine', // 104
   'N,N-dimethylethylamine', // 105
   'N,N-(1,3,5-cyclohexenyl)butylamine', // 106
+  '1-(2-aza-2-methyl-cyclopentenyl)-3-aza-1,3,5-cyclohexatriene' // 107
 ];
